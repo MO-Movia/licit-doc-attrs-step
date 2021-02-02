@@ -70,6 +70,7 @@ export class SetDocAttrStep extends Step {
     static fromJSON(schema: any, json: SetDocAttrStepJSONValue) {
         return new SetDocAttrStep(json.key, json.value, json.stepType);
     }
+    
     static register() {
         try {
             // [FS] IRAD-899 2020-03-13

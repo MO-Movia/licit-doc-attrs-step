@@ -49,7 +49,7 @@
     "prettier": "^2.0.5"
   },
   "dependencies": {
-    "prosemirror-model": "1.11.0",
-    "prosemirror-transform": "1.2.8"
+    "prosemirror-model": "^1.13.1",
+    "prosemirror-transform": "^1.2.9"
   }
 }
