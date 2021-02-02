@@ -12,7 +12,8 @@
     "build:clean": "rm -rf dist/ && rm -f modusoperandi-licit-doc-attrs-step-*.*.*.tgz",
     "build:babel": "babel src --out-dir dist",
     "build:dist": "npm run build:clean && npm run build:babel",
-    "prepare": "npm run build:dist"
+    "prepare": "npm run build:dist",
+    "lint": "eslint \"src\""
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
