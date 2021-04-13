@@ -11,9 +11,11 @@
   "scripts": {
     "build:clean": "rm -rf dist/ && rm -f modusoperandi-licit-doc-attrs-step-*.*.*.tgz",
     "build:babel": "babel src --out-dir dist",
-    "build:dist": "npm run build:clean && npm run build:babel",
-    "prepare": "npm run build:dist",
-    "lint": "eslint \"src\""
+    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src dist",
+    "build:dist": "npm run build:clean && npm run build:babel && npm run build:flow",
+    "flow": "flow --show-all-errors",
+    "lint:js": "eslint \"src/**/*.js\"",
+    "prepare": "npm run build:dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -46,11 +48,35 @@
     "eslint-plugin-react": "7.20.6",
     "flow-bin": "0.128.0",
     "flow-copy-source": "2.0.9",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
+    "stylelint": "^13.7.2",
+    "stylelint-config-standard": "^20.0.0"
   },
   "dependencies": {
     "prosemirror-model": "^1.13.1",
-    "prosemirror-transform": "^1.2.9"
+    "prosemirror-transform": "^1.2.9",
+    "prosemirror-state": "^1.3.4",
+    "prosemirror-view": "^1.17.3",
+    "browserkeymap": "2.0.2"
+  },
+  "importSort": {
+    ".js": {
+      "parser": "babylon",
+      "style": "module-grouping"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "!(*test|*.setup).js": [
+      "eslint --fix"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
   }
 }
