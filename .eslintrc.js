@@ -66,5 +66,15 @@ module.exports = {
     'requestAnimationFrame': false,
     'setTimeout': false,
     'window': false
-  }
+  },
+  'overrides': [
+    {
+      // enable jest globals in test files
+      files: '*.test.js',
+      plugins: ['jest'],
+      env: {
+        'jest/globals': true
+      }
+    }
+  ]
 };
