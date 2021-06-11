@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
   "main": "dist/index.js",
@@ -11,9 +11,13 @@
   "scripts": {
     "build:clean": "rm -rf dist/ && rm -f modusoperandi-licit-doc-attrs-step-*.*.*.tgz",
     "build:babel": "babel src --out-dir dist",
-    "build:dist": "npm run build:clean && npm run build:babel",
+    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src dist",
+    "build:dist": "npm run build:clean && npm run webpack && npm run build:babel && npm run build:flow",
+    "webpack": "webpack",
+    "flow": "flow --show-all-errors",
+    "lint": "eslint \"src/**/*.js\"",
     "prepare": "npm run build:dist",
-    "lint": "eslint \"src\""
+    "test": "jest --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -37,20 +41,70 @@
     "@babel/preset-flow": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "babel-eslint": "10.1.0",
+    "babel-jest": "^26.6.3",
     "babel-loader": "8.1.0",
     "babel-plugin-flow-react-proptypes": "26.0.0",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
+    "clean-webpack-plugin": "3.0.0",
+    "copy-webpack-plugin": "6.0.3",
     "eslint": "7.8.1",
     "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-jest": "^24.3.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "7.20.6",
     "flow-bin": "0.128.0",
     "flow-copy-source": "2.0.9",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5"
+    "flow-webpack-plugin": "1.2.0",
+    "husky": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^26.6.3",
+    "jest-prosemirror": "^0.8.3",
+    "jest-sonar-reporter": "^2.0.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
+    "stylelint": "^13.7.2",
+    "stylelint-config-standard": "^20.0.0",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.7.0",
+    "write-file-webpack-plugin": "4.5.1"
   },
   "dependencies": {
+    "browserkeymap": "2.0.2",
+    "prosemirror-keymap": "^1.1.4",
     "prosemirror-model": "^1.13.1",
-    "prosemirror-transform": "^1.2.9"
+    "prosemirror-state": "^1.3.4",
+    "prosemirror-transform": "^1.2.9",
+    "prosemirror-view": "^1.17.3"
+  },
+  "importSort": {
+    ".js": {
+      "parser": "babylon",
+      "style": "module-grouping"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "!(*test|*.setup).js": [
+      "eslint --fix"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
+  },
+  "jest": {
+    "rootDir": "src",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "setupFiles": [
+      "../jest.setup.js"
+    ]
   }
 }

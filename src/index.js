@@ -97,3 +97,13 @@ export class SetDocAttrStep extends Step {
   }
 }
 SetDocAttrStep.register();
+
+export {default as UICommand} from './UICommand.js';
+export {
+  makeKeyMap,
+  makeKeyMapWithCommon,
+  setPluginKey,
+  createKeyMapPlugin,
+} from './KeyCommand.js';
+
+export type {UserKeyCommand, UserKeyMap} from './KeyCommand.js';

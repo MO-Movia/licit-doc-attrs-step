@@ -1,2 +1,7 @@
+.DS_Store
+bin
 node_modules
+.vscode/
 dist
+*.tgz
+coverage
