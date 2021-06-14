@@ -1,5 +1,5 @@
 import UICommand from './UICommand';
-
+import {Transaction} from 'prosemirror-state';
 import {createEditor, doc, p} from 'jest-prosemirror';
 
 describe('UICommand', () => {
@@ -34,7 +34,7 @@ describe('UICommand', () => {
   it('executeCustom', () => {
     const uiCmd = new UICommand();
     const tr = uiCmd.executeCustom(editor.state, editor.state.tr, 0, 0);
-    expect(tr).toEqual(editor.state.tr);
+    expect(tr.doc).toBe(editor.state.tr.doc);
   });
 
   it('isActive', () => {
@@ -56,5 +56,27 @@ describe('UICommand', () => {
     uiCmd.waitForUserInput = mockWFUI;
     const enabled = uiCmd.isEnabled(editor.state, editor.view);
     expect(enabled).toEqual(false);
+  });
+
+  it('dryRunGet Transaction', () => {
+    const uiCmd = new UICommand();
+    const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, 'tr');
+    expect(obj).toBeInstanceOf(Transaction);
+  });
+
+  it('dryRunGet Any', () => {
+    const uiCmd = new UICommand();
+    const key = 'xTest';
+    const val = 'xVal';
+    editor.state[key] = val;
+    const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, key);
+    expect(obj).toEqual(val);
+  });
+
+  it('dryRunSet', () => {
+    const uiCmd = new UICommand();
+    const testVal = 'xVal';
+    uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal);
+    expect(editor.state.xTest).toEqual(testVal);
   });
 });

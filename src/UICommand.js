@@ -1,6 +1,6 @@
 // @flow
 
-import {EditorState, Selection} from 'prosemirror-state';
+import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
@@ -12,27 +12,6 @@ const EventType = {
   CLICK: 'mouseup',
   MOUSEENTER: 'mouseenter',
 };
-
-function dryRunEditorStateProxyGetter(
-  state: EditorState,
-  propKey: string
-): any {
-  const val = state[propKey];
-  if (propKey === 'tr' && val instanceof Transform) {
-    return val.setMeta('dryrun', true);
-  }
-  return val;
-}
-
-function dryRunEditorStateProxySetter(
-  state: EditorState,
-  propKey: string,
-  propValue: any
-): boolean {
-  state[propKey] = propValue;
-  // Indicate success
-  return true;
-}
 
 class UICommand {
   static EventType = EventType;
@@ -62,12 +41,30 @@ class UICommand {
 
     const dryRunState = fnProxy
       ? new fnProxy(state, {
-          get: dryRunEditorStateProxyGetter,
-          set: dryRunEditorStateProxySetter,
+          get: this.dryRunEditorStateProxyGetter,
+          set: this.dryRunEditorStateProxySetter,
         })
       : state;
 
     return this.execute(dryRunState, null, view);
+  };
+
+  dryRunEditorStateProxyGetter = (state: EditorState, propKey: string): any => {
+    const val = state[propKey];
+    if (propKey === 'tr' && val instanceof Transaction) {
+      return val.setMeta('dryrun', true);
+    }
+    return val;
+  };
+
+  dryRunEditorStateProxySetter = (
+    state: EditorState,
+    propKey: string,
+    propValue: any
+  ): boolean => {
+    state[propKey] = propValue;
+    // Indicate success
+    return true;
   };
 
   execute = (

@@ -9,7 +9,6 @@ import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 import {createEditor, doc, p} from 'jest-prosemirror';
 
-
 describe('KeyCommand', () => {
   const HELLO = 'hello';
   // Mockup execute method to insert text to compare later.
