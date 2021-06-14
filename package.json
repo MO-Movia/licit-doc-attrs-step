@@ -96,7 +96,6 @@
     ]
   },
   "jest": {
-    "rootDir": "src",
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
