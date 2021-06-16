@@ -62,6 +62,11 @@ describe('UICommand', () => {
     const uiCmd = new UICommand();
     const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, 'tr');
     expect(obj).toBeInstanceOf(Transaction);
+
+    if (obj instanceof Transaction) {
+      const meta = obj.getMeta('dryrun');
+      expect(meta).toEqual(true);
+    }
   });
 
   it('dryRunGet Any', () => {
