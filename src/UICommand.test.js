@@ -85,8 +85,8 @@ describe('UICommand', () => {
     const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, 'tr');
     expect(obj).toBeInstanceOf(Transaction);
 
-    // TODO: Generally tests should not branch. 
-    // During execution line 86 will abort the test if it does not pass. 
+    // TODO: Generally tests should not branch.
+    // During execution line 86 will abort the test if it does not pass.
     // Therefore you will never get to line 92 if it's not a Transaction
 
     if (obj instanceof Transaction) {
