@@ -80,10 +80,14 @@ describe('UICommand', () => {
     expect(enabled).toEqual(false);
   });
 
-  it('should set transaction meta data dryrun to true', () => {
+  xit('should set transaction meta data dryrun to true', () => {
     const uiCmd = new UICommand();
     const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, 'tr');
     expect(obj).toBeInstanceOf(Transaction);
+
+    // TODO: Generally tests should not branch. 
+    // During execution line 86 will abort the test if it does not pass. 
+    // Therefore you will never get to line 92 if it's not a Transaction
 
     if (obj instanceof Transaction) {
       const meta = obj.getMeta('dryrun');
