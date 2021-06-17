@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
   "main": "dist/index.js",
@@ -17,7 +17,8 @@
     "flow": "flow --show-all-errors",
     "lint": "eslint \"src/**/*.js\"",
     "prepare": "npm run build:dist",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -96,7 +97,21 @@
     ]
   },
   "jest": {
+    "setupFilesAfterEnv": [
+      "jest-prosemirror/environment"
+    ],
+    "testEnvironment": "jsdom",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "*.js"
+    ],
+    "verbose": true,
+    "testTimeout": 30000,
     "rootDir": "src",
+    "testRegex": "((\\.|/*.)(test))\\.js?$",
+    "moduleFileExtensions": [
+      "js"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },
