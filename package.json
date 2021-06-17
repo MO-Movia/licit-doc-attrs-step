@@ -17,7 +17,8 @@
     "flow": "flow --show-all-errors",
     "lint": "eslint \"src/**/*.js\"",
     "prepare": "npm run build:dist",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
@@ -96,6 +97,19 @@
     ]
   },
   "jest": {
+    "setupFilesAfterEnv": ["jest-prosemirror/environment"],
+    "testEnvironment": "jsdom",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "*.js"
+    ],
+    "verbose": true,
+    "testTimeout": 30000,
+    "rootDir": "src",
+    "testRegex": "((\\.|/*.)(test))\\.js?$",
+    "moduleFileExtensions": [
+        "js"
+    ],
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     },

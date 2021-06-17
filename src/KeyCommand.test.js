@@ -31,7 +31,7 @@ describe('KeyCommand', () => {
     ['Mod-A']: executeMock,
   });
 
-  test('PluginKeyBindings', () => {
+  it('should plugin key map work', () => {
     createEditor(doc(p('<cursor>')), {plugins: [plugin]})
       .shortcut('Mod-A')
       .callback((content) => {
@@ -47,19 +47,19 @@ describe('KeyCommand', () => {
   const NAME = 'Citation';
   const KEY = NAME + 'Plugin$';
 
-  test('SetPluginKey With Spec', () => {
+  it('should set Plugin key when plugin having spec', () => {
     plugin = setPluginKey(plugin, NAME);
     expect(plugin.key).toEqual(KEY);
   });
 
-  test('SetPluginKey Without Spec', () => {
+  it('should set plugin key when plugin spec is not set', () => {
     plugin.spec = undefined;
     plugin.key = undefined;
     plugin = setPluginKey(plugin, NAME);
     expect(plugin.key).not.toEqual(KEY);
   });
 
-  test('KeyMapping', () => {
+  it('should handle os based key map', () => {
     const TRIAL = 'Trial';
     const keymap0 = makeKeyMap(TRIAL, 'Alt-0', 'Alt-0', 'Alt-0');
     const keymap1 = makeKeyMapWithCommon(TRIAL, 'Alt-0');

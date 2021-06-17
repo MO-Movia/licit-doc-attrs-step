@@ -17,13 +17,35 @@ describe('UICommand', () => {
     console.error.mockRestore();
   });
 
-  it('isEnabled', () => {
-    const uiCmd = new UICommand();
-    const enabled = uiCmd.isEnabled(editor.state, editor.view);
-    expect(enabled).toEqual(false);
+  describe('isEnabled', () => {
+    let uiCmd: UICommand;
+
+    beforeEach(() => (uiCmd = new UICommand()));
+
+    describe('when command is enabled', () => {
+      xit('should return truthy value', () => {
+        // TODO: replace this comment with steps to enable the command.
+        // So skipping this for now
+
+        const output = uiCmd.isEnabled(editor.state, editor.view);
+
+        expect(output).toBeTruthy();
+      });
+    });
+
+    describe('when command is not enabled', () => {
+      xit('should return falsy value', () => {
+        // TODO: replace this comment with steps to disable the command.
+        // So skipping this for now
+
+        const output = uiCmd.isEnabled(editor.state, editor.view);
+
+        expect(output).toBeFalsy();
+      });
+    });
   });
 
-  it('shouldRespondToUIEvent', () => {
+  it('should respond to UI event', () => {
     const uiCmd = new UICommand();
     const respond = uiCmd.shouldRespondToUIEvent({
       type: UICommand.EventType.CLICK,
@@ -31,25 +53,25 @@ describe('UICommand', () => {
     expect(respond).toEqual(true);
   });
 
-  it('executeCustom', () => {
+  it('should execute custom', () => {
     const uiCmd = new UICommand();
     const tr = uiCmd.executeCustom(editor.state, editor.state.tr, 0, 0);
     expect(tr.doc).toBe(editor.state.tr.doc);
   });
 
-  it('isActive', () => {
+  it('should not be active by default', () => {
     const uiCmd = new UICommand();
     const active = uiCmd.isActive(editor.state);
     expect(active).toEqual(false);
   });
 
-  it('renderLabel', () => {
+  it('should label be null by default', () => {
     const uiCmd = new UICommand();
     const label = uiCmd.renderLabel(editor.state);
     expect(label).toEqual(null);
   });
 
-  it('isEnabled rejected', () => {
+  it('should be disabled if error thrown', () => {
     const uiCmd = new UICommand();
     const mockWFUI = jest.fn();
     mockWFUI.mockReturnValue(Promise.reject('this is error'));
@@ -58,7 +80,7 @@ describe('UICommand', () => {
     expect(enabled).toEqual(false);
   });
 
-  it('dryRunGet Transaction', () => {
+  it('should set transaction meta data dryrun to true', () => {
     const uiCmd = new UICommand();
     const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, 'tr');
     expect(obj).toBeInstanceOf(Transaction);
@@ -69,19 +91,44 @@ describe('UICommand', () => {
     }
   });
 
-  it('dryRunGet Any', () => {
-    const uiCmd = new UICommand();
-    const key = 'xTest';
-    const val = 'xVal';
-    editor.state[key] = val;
-    const obj = uiCmd.dryRunEditorStateProxyGetter(editor.state, key);
-    expect(obj).toEqual(val);
+  describe('dryRunEditorStateProxyGetter', () => {
+    let tr: Transaction;
+    let state;
+    let uiCmd: UICommand;
+
+    beforeEach(() => {
+      tr = new Transaction({});
+      tr.setMeta = jest.fn().mockImplementation(() => tr);
+      // use same spy for both cases
+      state = {tr, other: tr};
+      uiCmd = new UICommand();
+    });
+
+    describe('when getting the transaction', () => {
+      it('should update transaction metadata', () => {
+        const output = uiCmd.dryRunEditorStateProxyGetter(state, 'tr');
+
+        expect(tr.setMeta).toHaveBeenCalled();
+        expect(output).toBe(state.tr);
+      });
+    });
+
+    describe('when getting other data', () => {
+      it('should not update transaction metadata', () => {
+        const output = uiCmd.dryRunEditorStateProxyGetter(state, 'other');
+
+        expect(tr.setMeta).not.toHaveBeenCalled();
+        expect(output).toBe(state.other);
+      });
+    });
   });
 
-  it('dryRunSet', () => {
-    const uiCmd = new UICommand();
-    const testVal = 'xVal';
-    uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal);
-    expect(editor.state.xTest).toEqual(testVal);
+  describe('dryRunEditorStateProxySetter', () => {
+    it('should set state property', () => {
+      const uiCmd = new UICommand();
+      const testVal = 'xVal';
+      uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal);
+      expect(editor.state.xTest).toEqual(testVal);
+    });
   });
 });
