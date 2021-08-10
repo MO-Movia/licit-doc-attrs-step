@@ -1,5 +1,5 @@
 module.exports = {
-  'parser': 'babel-eslint',
+  'parser': '@typescript-eslint/parser',
   'parserOptions': {
     'sourceType': 'module',
     'allowImportExportEverywhere': false,
@@ -8,7 +8,10 @@ module.exports = {
       'jsx': true
     },
   },
-  'plugins': ['react'],
+  'plugins': ['@typescript-eslint','react'],
+  'extends': [
+    'plugin:@typescript-eslint/recommended'
+  ],
   'rules': {
     'react/jsx-sort-props': 'error',
     'react/jsx-uses-react': 'error',
@@ -37,9 +40,12 @@ module.exports = {
     'Class': false,
     'Component': false,
     'Document': true,
+    'DOMParser': false,
     'Element': false,
     'Event': false,
     'HTMLElement': false,
+    'HTMLInputElement': false,
+    'HTMLDivElement': false,
     'HTMLTableCellElement': false,
     'HTMLButtonElement': false,
     'HTMLLIElement': false,
@@ -49,9 +55,13 @@ module.exports = {
     'DragEvent': false,
     'MouseEvent': false,
     'KeyboardEvent': false,
+    'EventListener': false,
     'MutationObserver': false,
+    'MutationRecord': false,
+    'Node': false,
     'Promise': false,
     'Set': false,
+    'Selection': false,
     'Slice': false,
     'SyntheticEvent': false,
     'SyntheticInputEvent': false,
@@ -70,7 +80,7 @@ module.exports = {
   'overrides': [
     {
       // enable jest globals in test files
-      files: '*.test.js',
+      files: '*.test.ts',
       plugins: ['jest'],
       env: {
         'jest/globals': true

@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import {
   makeKeyMap,
   makeKeyMapWithCommon,
@@ -8,6 +11,7 @@ import * as PM from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 import {createEditor, doc, p} from 'jest-prosemirror';
+import { describe,it , expect, jest} from '@jest/globals';
 
 describe('KeyCommand', () => {
   const HELLO = 'hello';
@@ -15,9 +19,9 @@ describe('KeyCommand', () => {
   const executeMock = jest.fn(
     (
       state: PM.EditorState,
-      dispatch: ?(tr: Transform) => void,
-      view: ?EditorView,
-      event: ?SyntheticEvent<>
+      dispatch?: (tr: Transform) => void,
+      view?: EditorView,
+      event?: any
     ): boolean => {
       if (dispatch) {
         dispatch(state.tr.insertText(HELLO));

@@ -1,4 +1,6 @@
-// @flow
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
 
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
@@ -6,7 +8,7 @@ import {EditorView} from 'prosemirror-view';
 
 export type IsActiveCall = (state: EditorState) => boolean;
 
-export type FindNodeTypeInSelectionCall = (selection: Selection) => Object;
+export type FindNodeTypeInSelectionCall = (selection: Selection) => Record<string, unknown>;
 
 const EventType = {
   CLICK: 'mouseup',
@@ -16,7 +18,7 @@ const EventType = {
 class UICommand {
   static EventType = EventType;
 
-  shouldRespondToUIEvent = (e: SyntheticEvent<> | MouseEvent): boolean => {
+  shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
@@ -30,14 +32,14 @@ class UICommand {
 
   isEnabled = (
     state: EditorState,
-    view: ?EditorView,
-    menuTitle: string
+    view?: EditorView,
+    menuTitle?: string
   ): boolean => {
     return this.dryRun(state, view);
   };
 
-  dryRun = (state: EditorState, view: ?EditorView): boolean => {
-    const fnProxy = window['Proxy'];
+  dryRun = (state: EditorState, view?: EditorView): boolean => {
+    const fnProxy = typeof window !== 'undefined' && window['Proxy'];
 
     const dryRunState = fnProxy
       ? new fnProxy(state, {
@@ -46,10 +48,10 @@ class UICommand {
         })
       : state;
 
-    return this.execute(dryRunState, null, view);
+    return this.execute(dryRunState, undefined, view, null);
   };
 
-  dryRunEditorStateProxyGetter = (state: EditorState, propKey: string): any => {
+  dryRunEditorStateProxyGetter = (state: any, propKey: string): any => {
     const val = state[propKey];
     if (propKey === 'tr' && val instanceof Transaction) {
       return val.setMeta('dryrun', true);
@@ -58,7 +60,7 @@ class UICommand {
   };
 
   dryRunEditorStateProxySetter = (
-    state: EditorState,
+    state: any,
     propKey: string,
     propValue: any
   ): boolean => {
@@ -69,9 +71,9 @@ class UICommand {
 
   execute = (
     state: EditorState,
-    dispatch: ?(tr: Transform) => void,
-    view: ?EditorView,
-    event: ?SyntheticEvent<>
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    event?: any
   ): boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
@@ -85,18 +87,18 @@ class UICommand {
 
   waitForUserInput = (
     state: EditorState,
-    dispatch: ?(tr: Transform) => void,
-    view: ?EditorView,
-    event: ?SyntheticEvent<>
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    event?: any
   ): Promise<any> => {
     return Promise.resolve(undefined);
   };
 
   executeWithUserInput = (
     state: EditorState,
-    dispatch: ?(tr: Transform) => void,
-    view: ?EditorView,
-    inputs: any
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    inputs?: any
   ): boolean => {
     return false;
   };

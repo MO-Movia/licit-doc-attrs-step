@@ -10,12 +10,11 @@
   },
   "scripts": {
     "build:clean": "rm -rf dist/ && rm -f modusoperandi-licit-doc-attrs-step-*.*.*.tgz",
-    "build:babel": "babel src --out-dir dist",
-    "build:flow": "flow-copy-source -v -i '**/__tests__/**' src dist",
-    "build:dist": "npm run build:clean && npm run webpack && npm run build:babel && npm run build:flow",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:babel": "babel src --out-dir dist --extensions .ts",
+    "build:dist": "npm run build:clean && npm run build:ts && npm run webpack && npm run build:babel",
     "webpack": "webpack",
-    "flow": "flow --show-all-errors",
-    "lint": "eslint \"src/**/*.js\"",
+    "lint": "eslint src --ext .ts",
     "prepare": "npm run build:dist",
     "test": "jest --coverage",
     "debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i"
@@ -23,6 +22,7 @@
   "devDependencies": {
     "@babel/cli": "^7.10.4",
     "@babel/core": "^7.10.4",
+    "@babel/eslint-parser": "^7.15.0",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-proposal-decorators": "^7.10.4",
     "@babel/plugin-proposal-do-expressions": "^7.10.4",
@@ -35,37 +35,37 @@
     "@babel/plugin-proposal-throw-expressions": "^7.10.4",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/plugin-syntax-import-meta": "^7.10.4",
-    "@babel/plugin-transform-flow-strip-types": "^7.10.4",
     "@babel/plugin-transform-parameters": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.4",
+    "@babel/plugin-transform-typescript": "^7.15.0",
     "@babel/preset-env": "^7.10.4",
-    "@babel/preset-flow": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "^26.6.3",
-    "babel-loader": "8.1.0",
-    "babel-plugin-flow-react-proptypes": "26.0.0",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "babel-jest": "^27.0.6",
+    "babel-loader": "^8.2.2",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
-    "clean-webpack-plugin": "3.0.0",
-    "copy-webpack-plugin": "6.0.3",
-    "eslint": "7.8.1",
-    "eslint-config-prettier": "^6.11.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.3.2",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "7.20.6",
-    "flow-bin": "0.128.0",
-    "flow-copy-source": "2.0.9",
-    "flow-webpack-plugin": "1.2.0",
-    "husky": "^4.3.0",
+    "eslint-plugin-react": "^7.24.0",
+    "husky": "^7.0.1",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^26.6.3",
-    "jest-prosemirror": "^0.8.3",
+    "jest": "^27.0.6",
+    "jest-prosemirror": "^1.0.3",
     "jest-sonar-reporter": "^2.0.0",
-    "lint-staged": "^10.4.0",
+    "lint-staged": "^11.1.1",
     "prettier": "^2.1.2",
     "stylelint": "^13.7.2",
-    "stylelint-config-standard": "^20.0.0",
-    "webpack": "^4.46.0",
+    "stylelint-config-standard": "^22.0.0",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.2.0",
+    "webpack": "^5.48.0",
     "webpack-cli": "^4.7.0",
     "write-file-webpack-plugin": "4.5.1"
   },
@@ -89,37 +89,11 @@
     }
   },
   "lint-staged": {
-    "!(*test|*.setup).js": [
+    "!(*test|*.setup).ts": [
       "eslint --fix"
     ],
     "*.json": [
       "prettier --write"
-    ]
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "jest-prosemirror/environment"
-    ],
-    "testEnvironment": "jsdom",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "*.js"
-    ],
-    "verbose": true,
-    "testTimeout": 30000,
-    "rootDir": "src",
-    "testRegex": "((\\.|/*.)(test))\\.js?$",
-    "moduleFileExtensions": [
-      "js"
-    ],
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    },
-    "setupFiles": [
-      "../jest.setup.js"
     ]
   }
 }

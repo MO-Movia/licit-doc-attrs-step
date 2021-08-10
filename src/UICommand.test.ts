@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 import UICommand from './UICommand';
 import {Transaction} from 'prosemirror-state';
 import {createEditor, doc, p} from 'jest-prosemirror';
+import { describe,it , expect, jest, beforeAll, afterAll,beforeEach, xit} from '@jest/globals';
 
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));

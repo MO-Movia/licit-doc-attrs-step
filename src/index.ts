@@ -1,5 +1,6 @@
-// @flow
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
 import {Node} from 'prosemirror-model';
@@ -19,8 +20,9 @@ export class SetDocAttrStep extends Step {
   key: string;
   stepType: string;
   value: any;
+  prevValue: any;
 
-  constructor(key: string, value: any, stepType?: string = STEPNAME_SDA) {
+  constructor(key: string, value: any, stepType: string = STEPNAME_SDA) {
     super();
     this.stepType = stepType;
     this.key = key;
@@ -31,7 +33,7 @@ export class SetDocAttrStep extends Step {
     this.prevValue = doc.attrs[this.key];
     // avoid clobbering doc.type.defaultAttrs
     // this shall take care of focus out issue too.
-    if (doc.attrs === doc.type.defaultAttrs) {
+    if (doc.attrs === (doc.type as any).defaultAttrs) {
       doc.attrs = Object.assign({}, doc.attrs);
     }
     doc.attrs[this.key] = this.value;
@@ -48,12 +50,12 @@ export class SetDocAttrStep extends Step {
 
   // [FS] IRAD-1010 2020-07-27
   // Handle map properly so that undo works correctly for document attritube changes.
-  map(mapping: Mappable): ?SetDocAttrStep {
+  map(mapping: Mappable): SetDocAttrStep | null {
     // position never changes so map should always return same step
     return this;
   }
 
-  merge(other: SetDocAttrStep): ?SetDocAttrStep {
+  merge(other: SetDocAttrStep): SetDocAttrStep | null {
     if (other instanceof SetDocAttrStep) {
       return new SetDocAttrStep(this.key, this.value, STEPNAME_SDA);
     }
@@ -89,12 +91,12 @@ export class SetDocAttrStep extends Step {
 }
 SetDocAttrStep.register();
 
-export {default as UICommand} from './UICommand.js';
+export {default as UICommand} from './UICommand';
 export {
   makeKeyMap,
   makeKeyMapWithCommon,
   setPluginKey,
   createKeyMapPlugin,
-} from './KeyCommand.js';
+} from './KeyCommand';
 
-export type {UserKeyCommand, UserKeyMap} from './KeyCommand.js';
+export type {UserKeyCommand, UserKeyMap} from './KeyCommand';
