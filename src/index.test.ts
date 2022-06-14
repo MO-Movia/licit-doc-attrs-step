@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {SetDocAttrStep} from './index';
 import {AddMarkStep, Step} from 'prosemirror-transform';
 import {createEditor, doc, p, em} from 'jest-prosemirror';
+import {describe,  it, expect, xit, jest} from '@jest/globals';
+
 
 describe('SetDocAttrStep', () => {
   const editor = createEditor(doc(p('<cursor>')));
@@ -24,7 +28,7 @@ describe('SetDocAttrStep', () => {
     });
 
     it('should set attibute correctly even if doc attributes different from defaultAttrs', () => {
-      editor.state.doc.attrs = editor.state.doc.type.defaultAttrs;
+      editor.state.doc.attrs = (editor.state.doc.type as any).defaultAttrs;
       editor.state.tr.step(new SetDocAttrStep(KEY, VAL));
       expect(editor.state.doc.attrs[KEY]).toEqual(VAL);
     });
@@ -34,7 +38,7 @@ describe('SetDocAttrStep', () => {
     it('should return null when diff type of type of merged', () => {
       const markStep = new AddMarkStep(0, 1, em());
       const sdaStep = new SetDocAttrStep(KEY, VAL);
-      const result = sdaStep.merge(markStep);
+      const result = sdaStep.merge(markStep as any);
       expect(result).toBeNull();
     });
 
@@ -66,7 +70,7 @@ describe('SetDocAttrStep', () => {
   });
 
   xit('should throw error when more than once registered', () => {
-    // This is an incomplete test...
+    // This is an incomplete test,shall implement later...
     // Mock Return Value is not being reflected and so skipping this test now.
     expect(SetDocAttrStep.register()).toEqual(true);
     jest.spyOn(Step, 'jsonID').mockReturnValue(new RangeError('Err'));

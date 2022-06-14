@@ -1,15 +1,16 @@
-// @flow
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
 
-import {Plugin, PluginKey, EditorState} from 'prosemirror-state';
-import Keymap from 'browserkeymap';
+import { PluginKey, EditorState} from 'prosemirror-state';
 import {keymap} from 'prosemirror-keymap';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
 export type UserKeyCommand = (
   state: EditorState,
-  dispatch: ?(tr: Transform) => void,
-  view: ?EditorView
+  dispatch?: (tr: Transform) => void,
+  view?: EditorView
 ) => boolean;
 
 export type UserKeyMap = {
@@ -20,8 +21,8 @@ export function makeKeyMap(
   description: string,
   windows: string,
   mac: string,
-  common?: ?string
-): Keymap {
+  common?: string
+): any {
   return {
     description: description,
     windows: windows,
@@ -33,7 +34,7 @@ export function makeKeyMap(
 export function makeKeyMapWithCommon(
   description: string,
   common: string
-): Keymap {
+): any {
   const windows = common.replace(/Mod/i, 'Ctrl');
   const mac = common.replace(/Mod/i, 'Cmd');
   return makeKeyMap(description, windows, mac, common);
@@ -42,7 +43,7 @@ export function makeKeyMapWithCommon(
 // [FS] IRAD-1005 2020-07-07
 // Upgrade outdated packages.
 // set plugin keys so that to avoid duplicate key error when keys are assigned automatically.
-export function setPluginKey(plugin: Plugin, key: string) {
+export function setPluginKey(plugin: any, key: string) {
   if (plugin && plugin.spec) {
     plugin.spec.key = new PluginKey(key + 'Plugin');
     if (plugin.spec.key) {
@@ -52,6 +53,6 @@ export function setPluginKey(plugin: Plugin, key: string) {
   return plugin;
 }
 
-export function createKeyMapPlugin(pluginKeyMap: UserKeyMap, name: string) {
+export function createKeyMapPlugin(pluginKeyMap: any, name: string) {
   return setPluginKey(keymap(pluginKeyMap), name);
 }
