@@ -44,7 +44,8 @@ export class SetDocAttrStep extends Step {
     return new SetDocAttrStep(
       this.key,
       this.prevValue,
-      'revert' + STEPNAME_SDA
+      // 'revert' + STEPNAME_SDA
+      STEPNAME_SDA
     );
   }
 
