@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
   "main": "dist/index.js",
@@ -76,7 +76,7 @@
     "prosemirror-state": "1.4.2",
     "prosemirror-transform": "1.7.0",
     "prosemirror-view": "1.27.0",
-    "typescript": "^4.4.2"
+    "typescript": "^4.8.4"
   },
   "importSort": {
     ".js": {
