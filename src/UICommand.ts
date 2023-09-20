@@ -8,14 +8,16 @@ import {EditorView} from 'prosemirror-view';
 
 export type IsActiveCall = (state: EditorState) => boolean;
 
-export type FindNodeTypeInSelectionCall = (selection: Selection) => Record<string, unknown>;
+export type FindNodeTypeInSelectionCall = (
+  selection: Selection
+) => Record<string, unknown>;
 
-const EventType = {
+export const EventType = {
   CLICK: 'mouseup',
   MOUSEENTER: 'mouseenter',
 };
 
-class UICommand {
+export class UICommand {
   static EventType = EventType;
 
   shouldRespondToUIEvent = (e: any): boolean => {
@@ -117,4 +119,4 @@ class UICommand {
   };
 }
 
-export default UICommand;
+// export class UICommand;

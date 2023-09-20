@@ -1,9 +1,11 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "0.1.5",
+  "version": "0.1.6",
+  "type": "module",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MO-Movia/licit-doc-attrs-step.git"
@@ -42,6 +44,10 @@
     "@babel/plugin-transform-parameters": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/plugin-transform-typescript": "^7.15.0",
+    "@babel/plugin-proposal-json-strings": "^7.18.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.15.0",
+    "@babel/plugin-proposal-numeric-separator": "^7.15.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.15.0",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.15.0",
@@ -62,8 +68,7 @@
     "husky": "^7.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
-    "jest-junit": "^15.0.0",
-    "jest-prosemirror": "^1.0.3",
+    "jest-prosemirror": "^1.0.10",
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^11.1.1",
     "prettier": "^2.1.2",
@@ -77,11 +82,11 @@
   },
   "dependencies": {
     "browserkeymap": "2.0.2",
-    "prosemirror-keymap": "1.2.0",
+    "prosemirror-keymap": "^1.2.0",
     "prosemirror-model": "~1.16.0",
-    "prosemirror-state": "1.4.2",
-    "prosemirror-transform": "1.7.0",
-    "prosemirror-view": "1.27.0",
+    "prosemirror-state": "^1.4.2",
+    "prosemirror-transform": "^1.7.0",
+    "prosemirror-view": "^1.27.0",
     "typescript": "^4.8.4"
   },
   "importSort": {
