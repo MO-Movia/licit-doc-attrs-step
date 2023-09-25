@@ -29,7 +29,7 @@ export class SetDocAttrStep extends Step {
     this.value = value;
   }
 
-  apply(doc: Node): StepResult {
+  apply(doc: any): StepResult {
     this.prevValue = doc.attrs[this.key];
     // avoid clobbering doc.type.defaultAttrs
     // this shall take care of focus out issue too.
