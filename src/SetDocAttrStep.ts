@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
-import {Node} from 'prosemirror-model';
 import {Step, StepResult, Mappable} from 'prosemirror-transform';
 
 type SetDocAttrStepJSONValue = {

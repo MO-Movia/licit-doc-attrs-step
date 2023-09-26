@@ -12,7 +12,7 @@ describe('UICommand', () => {
   });
 
   afterAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => { });
+    jest.spyOn(console, 'error').mockImplementation(() => {return true; });
   });
 
   it('should respond to UI event', () => {
@@ -81,10 +81,6 @@ describe('UICommand', () => {
     it('should set state property', () => {
       const testVal = 'xVal';
       expect(uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal)).toBeTruthy();
-
-      // const testVal = 'xVal';
-      // uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal);
-      // expect(editor.state.xTest).toEqual(testVal);
     });
   });
 
