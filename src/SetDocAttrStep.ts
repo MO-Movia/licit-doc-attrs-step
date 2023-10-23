@@ -80,7 +80,7 @@ export class SetDocAttrStep extends Step {
       // Register this step so that document attrbute changes can be dealt collaboratively.
       Step.jsonID(STEPNAME_SDA, SetDocAttrStep);
     } catch (err) {
-      if (err.message !== `Duplicate use of step JSON ID ${STEPNAME_SDA}`) {
+      if (err instanceof Error && err.message !== `Duplicate use of step JSON ID ${STEPNAME_SDA}`) {
         // this means something else happened, cannot use this.
         // otherwise it is already registered.
         throw err;
