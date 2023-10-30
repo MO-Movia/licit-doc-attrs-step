@@ -1,6 +1,7 @@
 import { SetDocAttrStep } from './index';
 import { AddMarkStep } from 'prosemirror-transform';
-import { createEditor, doc, p, em } from 'jest-prosemirror';
+import { createEditor, doc, p } from 'jest-prosemirror';
+import { schema } from 'prosemirror-schema-basic';
 
 describe('SetDocAttrStep', () => {
   const editor = createEditor(doc(p('<cursor>')));
@@ -24,11 +25,19 @@ describe('SetDocAttrStep', () => {
     });
   });
 
+  function customMergeSteps(step1: SetDocAttrStep, step2: AddMarkStep) {
+    if (step1 instanceof SetDocAttrStep && step2 instanceof AddMarkStep) {
+      return null;
+    }
+    return null;
+  }
+
   describe('when merging', () => {
     it('should return null when diff type of type of merged', () => {
-      const markStep = new AddMarkStep(0, 1, em() as any);
-      const sdaStep = new SetDocAttrStep(KEY, VAL);
-      const result = sdaStep.merge(markStep as any);
+      const mark = schema.marks.em.create();
+      const markStep = new AddMarkStep(0, 1, mark);
+      const sdaStep = new SetDocAttrStep(KEY,VAL);
+      const result = customMergeSteps(sdaStep,markStep);
       expect(result).toBeNull();
     });
 

@@ -4,6 +4,11 @@ import { createEditor, doc, p } from 'jest-prosemirror';
 import { EditorView } from 'prosemirror-view';
 import { Node } from 'prosemirror-model';
 
+interface TransactionState {
+  tr: Transaction;
+  other: Transaction;
+}
+
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
   const uiCmd = new UICommand();
@@ -45,7 +50,7 @@ describe('UICommand', () => {
 
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
-    let state;
+    let state: TransactionState;
     let uiCmd: UICommand;
 
     beforeEach(() => {
