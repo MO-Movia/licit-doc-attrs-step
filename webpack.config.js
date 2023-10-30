@@ -49,7 +49,7 @@ let options = {
   },
   resolve: {
     alias: {},
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.tsx', '.jsx', '.ts', '.js', '.json'],
   },
   plugins: [
     // clean the web folder

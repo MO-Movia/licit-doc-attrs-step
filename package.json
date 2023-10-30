@@ -17,7 +17,6 @@
     "build:dist": "npm run build:clean && npm run build:ts && npm run webpack && npm run build:babel",
     "webpack": "webpack",
     "lint": "eslint src --ext .ts",
-    "prepare": "npm run build:dist",
     "test": "jest --coverage",
     "test:unit": "jest",
     "test:coverage": "jest --coverage",
