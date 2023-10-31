@@ -1,38 +1,28 @@
-/* eslint-disable */
-
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import WriteFilePlugin from 'write-file-webpack-plugin';
-import path, {
-  dirname
-} from 'path';
-import {
-  CleanWebpackPlugin
-} from 'clean-webpack-plugin';
-import {
-  fileURLToPath
-} from 'url';
+import path, {dirname} from 'path';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
+import {fileURLToPath} from 'url';
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-let isDev = 'development' === NODE_ENV || 0;
+const isDev = 'development' === NODE_ENV || 0;
 
-
-
-const __filename = fileURLToPath(
-  import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-let options = {
+const options = {
   mode: NODE_ENV,
   entry: {
     index: path.join(__dirname, 'src', 'index.ts'),
   },
   output: {
     path: path.join(__dirname, 'bin'),
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
@@ -44,12 +34,12 @@ let options = {
         resolve: {
           fullySpecified: false,
         },
-      }
+      },
     ],
   },
   resolve: {
     alias: {},
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json'],
   },
   plugins: [
     // clean the web folder
@@ -58,7 +48,7 @@ let options = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(NODE_ENV),
     }),
-    new WriteFilePlugin()
+    new WriteFilePlugin(),
   ],
 };
 

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
 import {Step, StepResult, Mappable} from 'prosemirror-transform';
@@ -32,8 +29,8 @@ export class SetDocAttrStep extends Step {
     this.prevValue = doc.attrs[this.key];
     // avoid clobbering doc.type.defaultAttrs
     // this shall take care of focus out issue too.
-    if (doc.attrs === (doc.type as any).defaultAttrs) {
-      doc.attrs = Object.assign({}, doc.attrs);
+    if (doc.attrs === doc.type.defaultAttrs) {
+      doc.attrs = {...doc.attrs};
     }
     doc.attrs[this.key] = this.value;
     return StepResult.ok(doc);
@@ -50,7 +47,7 @@ export class SetDocAttrStep extends Step {
 
   // [FS] IRAD-1010 2020-07-27
   // Handle map properly so that undo works correctly for document attritube changes.
-  map(mapping: Mappable): SetDocAttrStep | null {
+  map(mapping: Mappable): this {
     // position never changes so map should always return same step
     return this;
   }
@@ -80,7 +77,12 @@ export class SetDocAttrStep extends Step {
       // Register this step so that document attrbute changes can be dealt collaboratively.
       Step.jsonID(STEPNAME_SDA, SetDocAttrStep);
     } catch (err) {
-      if (err instanceof Error && err.message !== `Duplicate use of step JSON ID ${STEPNAME_SDA}`) {
+      if (
+        !(
+          err instanceof Error &&
+          err.message === `Duplicate use of step JSON ID ${STEPNAME_SDA}`
+        )
+      ) {
         // this means something else happened, cannot use this.
         // otherwise it is already registered.
         throw err;

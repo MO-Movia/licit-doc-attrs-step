@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
-
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
@@ -17,7 +13,7 @@ export const EventType = {
   MOUSEENTER: 'mouseenter',
 };
 
-export class UICommand {
+export abstract class UICommand {
   static EventType = EventType;
 
   shouldRespondToUIEvent = (e: any): boolean => {
