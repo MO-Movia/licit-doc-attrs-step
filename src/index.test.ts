@@ -1,6 +1,7 @@
-import { SetDocAttrStep } from './index';
-import { AddMarkStep } from 'prosemirror-transform';
-import { createEditor, doc, p, em } from 'jest-prosemirror';
+import {SetDocAttrStep} from './index';
+import {AddMarkStep} from 'prosemirror-transform';
+import {createEditor, doc, p, em} from 'jest-prosemirror';
+import {Mark} from 'prosemirror-model';
 
 describe('SetDocAttrStep', () => {
   const editor = createEditor(doc(p('<cursor>')));
@@ -26,9 +27,9 @@ describe('SetDocAttrStep', () => {
 
   describe('when merging', () => {
     it('should return null when diff type of type of merged', () => {
-      const markStep = new AddMarkStep(0, 1, em() as any);
+      const markStep = new AddMarkStep(0, 1, em() as unknown as Mark);
       const sdaStep = new SetDocAttrStep(KEY, VAL);
-      const result = sdaStep.merge(markStep as any);
+      const result = sdaStep.merge(markStep as unknown as SetDocAttrStep);
       expect(result).toBeNull();
     });
 

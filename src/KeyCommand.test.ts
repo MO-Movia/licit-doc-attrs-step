@@ -8,14 +8,10 @@ import * as PM from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {createEditor, doc, p} from 'jest-prosemirror';
 
-
 describe('KeyCommand', () => {
   const HELLO = 'hello';
   const executeMock = jest.fn(
-    (
-      state: PM.EditorState,
-      dispatch?: (tr: Transform) => void
-    ): boolean => {
+    (state: PM.EditorState, dispatch?: (tr: Transform) => void): boolean => {
       if (dispatch) {
         dispatch(state.tr.insertText(HELLO));
       }
@@ -23,12 +19,15 @@ describe('KeyCommand', () => {
     }
   );
 
-  let plugin = createKeyMapPlugin({
-    ['Mod-A']: executeMock,
-  },'');
+  let plugin = createKeyMapPlugin(
+    {
+      ['Mod-A']: executeMock,
+    },
+    ''
+  );
 
   it('should plugin key map work', () => {
-    createEditor(doc(p('<cursor>')), { plugins: [plugin] })
+    createEditor(doc(p('<cursor>')), {plugins: [plugin]})
       .shortcut('Mod-A')
       .callback((content) => {
         expect(content.state.doc).toBeDefined();

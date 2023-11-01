@@ -1,18 +1,22 @@
 import {UICommand} from './UICommand';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { createEditor, doc, p } from 'jest-prosemirror';
-import { EditorView } from 'prosemirror-view';
-import { Node } from 'prosemirror-model';
+import {EditorState, Transaction} from 'prosemirror-state';
+import {createEditor, doc, p} from 'jest-prosemirror';
+import {EditorView} from 'prosemirror-view';
+import {Node} from 'prosemirror-model';
 
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
   const uiCmd = new UICommand();
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => { return; });
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      return;
+    });
   });
 
   afterAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {return true; });
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      return true;
+    });
   });
 
   it('should respond to UI event', () => {
@@ -38,8 +42,11 @@ describe('UICommand', () => {
   });
 
   it('should be disabled if error thrown', () => {
-    jest.spyOn(uiCmd,'waitForUserInput').mockRejectedValue('this is error');
-    const enabled = uiCmd.isEnabled(editor.state, editor.view as unknown as EditorView);
+    jest.spyOn(uiCmd, 'waitForUserInput').mockRejectedValue('this is error');
+    const enabled = uiCmd.isEnabled(
+      editor.state,
+      editor.view as unknown as EditorView
+    );
     expect(enabled).toEqual(false);
   });
 
@@ -50,8 +57,8 @@ describe('UICommand', () => {
 
     beforeEach(() => {
       tr = new Transaction({} as unknown as Node);
-      jest.spyOn(tr,'setMeta').mockImplementation(() => tr);
-      state = { tr, other: tr };
+      jest.spyOn(tr, 'setMeta').mockImplementation(() => tr);
+      state = {tr, other: tr};
       uiCmd = new UICommand();
     });
 
@@ -80,7 +87,9 @@ describe('UICommand', () => {
   describe('dryRunEditorStateProxySetter', () => {
     it('should set state property', () => {
       const testVal = 'xVal';
-      expect(uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal)).toBeTruthy();
+      expect(
+        uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal)
+      ).toBeTruthy();
     });
   });
 
@@ -88,7 +97,6 @@ describe('UICommand', () => {
     it('should be return false', () => {
       const state_ = {} as unknown as EditorState;
       expect(uiCmd.executeWithUserInput(state_)).toBeFalsy();
-
     });
   });
 });
