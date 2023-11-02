@@ -20,18 +20,18 @@ export class UICommand {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel = (state: EditorState): any => {
+  renderLabel = (_state: EditorState): any => {
     return null;
   };
 
-  isActive = (state: EditorState): boolean => {
+  isActive = (_state: EditorState): boolean => {
     return false;
   };
 
   isEnabled = (
     state: EditorState,
     view?: EditorView,
-    menuTitle?: string
+    _menuTitle?: string
   ): boolean => {
     return this.dryRun(state, view);
   };
@@ -84,19 +84,19 @@ export class UICommand {
   };
 
   waitForUserInput = (
-    state: EditorState,
-    dispatch?: (tr: Transform) => void,
-    view?: EditorView,
-    event?: any
+    _state: EditorState,
+    _dispatch?: (tr: Transform) => void,
+    _view?: EditorView,
+    _event?: any
   ): Promise<any> => {
     return Promise.resolve(undefined);
   };
 
   executeWithUserInput = (
-    state: EditorState,
-    dispatch?: (tr: Transform) => void,
-    view?: EditorView,
-    inputs?: any
+    _state: EditorState,
+    _dispatch?: (tr: Transform) => void,
+    _view?: EditorView,
+    _inputs?: any
   ): boolean => {
     return false;
   };
@@ -106,10 +106,10 @@ export class UICommand {
   }
 
   executeCustom = (
-    state: EditorState,
+    _state: EditorState,
     tr: Transform,
-    from: number,
-    to: number
+    _from: number,
+    _to: number
   ): Transform => {
     return tr;
   };

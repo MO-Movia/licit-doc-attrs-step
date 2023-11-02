@@ -99,4 +99,12 @@ describe('UICommand', () => {
       expect(uiCmd.executeWithUserInput(state_)).toBeFalsy();
     });
   });
+  describe('execute ', () => {
+    it('should execute ', () => {
+      const spy = jest.spyOn(uiCmd,'waitForUserInput').mockResolvedValue({});
+      const state_ = {} as unknown as EditorState;
+      uiCmd.execute(state_);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
 });

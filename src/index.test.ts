@@ -1,7 +1,7 @@
-import {SetDocAttrStep} from './index';
-import {AddMarkStep} from 'prosemirror-transform';
-import {createEditor, doc, p, em} from 'jest-prosemirror';
-import {Mark} from 'prosemirror-model';
+import { SetDocAttrStep } from './index';
+import { AddMarkStep } from 'prosemirror-transform';
+import { createEditor, doc, p, em } from 'jest-prosemirror';
+import { Mark } from 'prosemirror-model';
 
 describe('SetDocAttrStep', () => {
   const editor = createEditor(doc(p('<cursor>')));
@@ -31,6 +31,25 @@ describe('SetDocAttrStep', () => {
       const sdaStep = new SetDocAttrStep(KEY, VAL);
       const result = sdaStep.merge(markStep as unknown as SetDocAttrStep);
       expect(result).toBeNull();
+    });
+    it('should handle apply', () => {
+      const key = 'exampleKey';
+      const value = 'newValue';
+      const defaultValue = 'defaultValue';
+      const sharedAttrs = {
+        [key]: defaultValue
+      };
+      const doc = {
+        attrs: sharedAttrs,
+        type: {
+          defaultAttrs: sharedAttrs
+        }
+      };
+      const sdaStep = new SetDocAttrStep(KEY, VAL);
+      sdaStep.apply.call({ key, value }, doc);
+      expect(doc.attrs[key]).toBe(value);
+      expect(doc.type.defaultAttrs[key]).toBe(defaultValue);
+      expect(doc.attrs).not.toBe(doc.type.defaultAttrs);
     });
 
     it('should return merged step when same step type is merged', () => {
