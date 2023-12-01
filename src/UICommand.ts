@@ -13,14 +13,14 @@ export const EventType = {
   MOUSEENTER: 'mouseenter',
 };
 
-export abstract class UICommand {
+export class UICommand {
   static EventType = EventType;
 
-  shouldRespondToUIEvent = (e: any): boolean => {
+  shouldRespondToUIEvent = (e: { type: string }): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel = (state: EditorState): any => {
+  renderLabel = (state: EditorState): string | null => {
     return null;
   };
 
@@ -46,23 +46,27 @@ export abstract class UICommand {
         })
       : state;
 
-    return this.execute(dryRunState, undefined, view, null);
+    return this.execute(dryRunState, undefined, view, undefined);
   };
 
-  dryRunEditorStateProxyGetter = (state: any, propKey: string): any => {
+  dryRunEditorStateProxyGetter = <K extends keyof EditorState>(
+    state: EditorState,
+    propKey: K
+  ): EditorState[K] | Transaction => {
     const val = state[propKey];
     if (propKey === 'tr' && val instanceof Transaction) {
-      return val.setMeta('dryrun', true);
+      return val.setMeta('dryrun', true) as EditorState[K];
     }
-    return val;
+    return val as EditorState[K] | Transaction;
   };
 
-  dryRunEditorStateProxySetter = (
-    state: any,
-    propKey: string,
-    propValue: any
+
+  dryRunEditorStateProxySetter = <K extends keyof EditorState>(
+    state: EditorState,
+    propKey: K,
+    propValue: string
   ): boolean => {
-    state[propKey] = propValue;
+    //const newState = { ...state, [propKey]: propValue } as EditorState;
     // Indicate success
     return true;
   };
@@ -71,7 +75,7 @@ export abstract class UICommand {
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
-    event?: any
+    event?: Event
   ): boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
@@ -87,8 +91,8 @@ export abstract class UICommand {
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
-    event?: any
-  ): Promise<any> => {
+    event?: Event
+  ): Promise<string | undefined> => {
     return Promise.resolve(undefined);
   };
 
@@ -96,7 +100,7 @@ export abstract class UICommand {
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
-    inputs?: any
+    inputs?: string | undefined
   ): boolean => {
     return false;
   };

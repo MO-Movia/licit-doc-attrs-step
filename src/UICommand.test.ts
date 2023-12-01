@@ -4,11 +4,6 @@ import { createEditor, doc, p } from 'jest-prosemirror';
 import { EditorView } from 'prosemirror-view';
 import { Node } from 'prosemirror-model';
 
-interface TransactionState {
-  tr: Transaction;
-  other: Transaction;
-}
-
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
   const uiCmd = new UICommand();
@@ -50,13 +45,13 @@ describe('UICommand', () => {
 
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
-    let state: TransactionState;
+    let state: EditorState;
     let uiCmd: UICommand;
 
     beforeEach(() => {
       tr = new Transaction({} as unknown as Node);
       jest.spyOn(tr,'setMeta').mockImplementation(() => tr);
-      state = { tr, other: tr };
+      state = { tr } as EditorState;
       uiCmd = new UICommand();
     });
 
@@ -70,9 +65,9 @@ describe('UICommand', () => {
 
     describe('when getting other data', () => {
       it('should not update transaction metadata', () => {
-        const output = uiCmd.dryRunEditorStateProxyGetter(state, 'other');
+        const output = uiCmd.dryRunEditorStateProxyGetter(state, 'other' as keyof EditorState);
         expect(tr.setMeta).not.toHaveBeenCalled();
-        expect(output).toBe(state.other);
+        expect(output).toBeUndefined();
       });
     });
   });
@@ -85,7 +80,7 @@ describe('UICommand', () => {
   describe('dryRunEditorStateProxySetter', () => {
     it('should set state property', () => {
       const testVal = 'xVal';
-      expect(uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal)).toBeTruthy();
+      expect(uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest' as keyof EditorState, testVal)).toBeTruthy();
     });
   });
 
