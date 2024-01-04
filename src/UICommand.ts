@@ -20,7 +20,7 @@ export class UICommand {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel = (_state: EditorState): any => {
+  renderLabel = (state: EditorState): string | null | HTMLElement => {
     return null;
   };
 
@@ -71,7 +71,7 @@ export class UICommand {
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
-    event?: any
+    event?: Event
   ): boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
@@ -84,19 +84,19 @@ export class UICommand {
   };
 
   waitForUserInput = (
-    _state: EditorState,
-    _dispatch?: (tr: Transform) => void,
-    _view?: EditorView,
-    _event?: any
-  ): Promise<any> => {
+    state: EditorState,
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    event?: Event
+  ): Promise<string | undefined> => {
     return Promise.resolve(undefined);
   };
 
   executeWithUserInput = (
-    _state: EditorState,
-    _dispatch?: (tr: Transform) => void,
-    _view?: EditorView,
-    _inputs?: any
+    state: EditorState,
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    inputs?: string | undefined
   ): boolean => {
     return false;
   };
@@ -106,10 +106,10 @@ export class UICommand {
   }
 
   executeCustom = (
-    _state: EditorState,
+    state: EditorState,
     tr: Transform,
-    _from: number,
-    _to: number
+    from: number,
+    to: number
   ): Transform => {
     return tr;
   };

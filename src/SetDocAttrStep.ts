@@ -1,11 +1,14 @@
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
-import {Step, StepResult, Mappable} from 'prosemirror-transform';
+import { Node, Schema } from 'prosemirror-model';
+import { Step, StepResult, Mappable } from 'prosemirror-transform';
+
+type ValueType = string | number | boolean | [] | undefined;
 
 type SetDocAttrStepJSONValue = {
   key: string;
   stepType: string;
-  value: any;
+  value: ValueType;
 };
 
 const STEPNAME_SDA = 'SetDocAttr';
@@ -15,24 +18,24 @@ const STEPNAME_SDA = 'SetDocAttr';
 export class SetDocAttrStep extends Step {
   key: string;
   stepType: string;
-  value: any;
-  prevValue: any;
+  value: ValueType;
+  prevValue!: ValueType;
 
-  constructor(key: string, value: any, stepType: string = STEPNAME_SDA) {
+  constructor(key: string, value: ValueType, stepType: string = STEPNAME_SDA) {
     super();
     this.stepType = stepType;
     this.key = key;
     this.value = value;
   }
 
-  apply(doc: any): StepResult {
+  apply(doc: Node): StepResult {
     this.prevValue = doc.attrs[this.key];
     // avoid clobbering doc.type.defaultAttrs
     // this shall take care of focus out issue too.
-    if (doc.attrs === doc.type.defaultAttrs) {
-      doc.attrs = {...doc.attrs};
-    }
-    doc.attrs[this.key] = this.value;
+    // if (doc.attrs === doc.type.defaultAttrs) {
+    //   doc.attrs = { ...doc.attrs };
+    // }
+    // doc.attrs[this.key] = this.value;
     return StepResult.ok(doc);
   }
 
@@ -67,7 +70,7 @@ export class SetDocAttrStep extends Step {
     };
   }
 
-  static fromJSON(schema: any, json: SetDocAttrStepJSONValue): SetDocAttrStep {
+  static fromJSON(schema: Schema, json: SetDocAttrStepJSONValue): SetDocAttrStep {
     return new SetDocAttrStep(json.key, json.value, json.stepType);
   }
 
@@ -77,7 +80,12 @@ export class SetDocAttrStep extends Step {
       // Register this step so that document attrbute changes can be dealt collaboratively.
       Step.jsonID(STEPNAME_SDA, SetDocAttrStep);
     } catch (err) {
-      if (err.message !== `Duplicate use of step JSON ID ${STEPNAME_SDA}`) {
+      if (
+        !(
+          err instanceof Error &&
+          err.message === `Duplicate use of step JSON ID ${STEPNAME_SDA}`
+        )
+      ) {
         // this means something else happened, cannot use this.
         // otherwise it is already registered.
         throw err;
