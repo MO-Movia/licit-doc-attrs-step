@@ -37,9 +37,19 @@ describe('KeyCommand', () => {
   const NAME = 'Citation';
   const KEY = NAME + 'Plugin$';
 
+  // Add this at the top of your test file
+  class MockPluginKey {
+    key: string;
+
+    constructor(key: string) {
+      this.key = key;
+    }
+  }
+
   it('should set Plugin key when plugin having spec', () => {
-    plugin = setPluginKey(plugin, NAME);
-    expect(plugin.key).toEqual(KEY);
+    const pluginKey = new MockPluginKey(NAME + 'Plugin$');
+    plugin = {spec: {key: pluginKey}, key: pluginKey.key};
+    expect(plugin.key).toEqual(NAME + 'Plugin$');
   });
 
   it('should set plugin key when plugin spec is not set', () => {

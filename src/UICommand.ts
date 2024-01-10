@@ -1,6 +1,6 @@
-import {EditorState, Selection, Transaction} from 'prosemirror-state';
-import {Transform} from 'prosemirror-transform';
-import {EditorView} from 'prosemirror-view';
+import { EditorState, Selection, Transaction } from 'prosemirror-state';
+import { Transform } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
 
 export type IsActiveCall = (state: EditorState) => boolean;
 
@@ -41,9 +41,9 @@ export class UICommand {
 
     const dryRunState = fnProxy
       ? new fnProxy(state, {
-          get: this.dryRunEditorStateProxyGetter,
-          set: this.dryRunEditorStateProxySetter,
-        })
+        get: this.dryRunEditorStateProxyGetter,
+        set: this.dryRunEditorStateProxySetter,
+      })
       : state;
 
     return this.execute(dryRunState, undefined, view, null);
@@ -92,10 +92,6 @@ export class UICommand {
     return Promise.resolve(undefined);
   };
 
-
-
-
-  
   executeWithUserInput = (
     _state: EditorState,
     _dispatch?: (tr: Transform) => void,
