@@ -1,7 +1,7 @@
-import {SetDocAttrStep} from './index';
-import {AddMarkStep} from 'prosemirror-transform';
-import {em} from 'jest-prosemirror';
-import {Mark} from 'prosemirror-model';
+import { SetDocAttrStep } from './index';
+import { AddMarkStep } from 'prosemirror-transform';
+import { em } from 'jest-prosemirror';
+import { Mark } from 'prosemirror-model';
 
 describe('SetDocAttrStep', () => {
   const KEY = 'uniqueKey';
@@ -31,14 +31,14 @@ describe('SetDocAttrStep', () => {
         [key]: defaultValue,
       };
       const doc = {
-        attrs: {...sharedAttrs},
+        attrs: { ...sharedAttrs },
         type: {
-          defaultAttrs: {...sharedAttrs},
+          defaultAttrs: { ...sharedAttrs },
         },
       };
       const sdaStep = new SetDocAttrStep(key, value); // Use key and value instead of KEY and VAL
       sdaStep.apply(doc);
-      expect(doc.attrs[key]).toBe(defaultValue);
+      expect(doc.attrs[key]).toBe(value);
       expect(doc.type.defaultAttrs[key]).toBe(defaultValue); // This should still be the original value
       expect(doc.attrs).not.toBe(doc.type.defaultAttrs);
     });

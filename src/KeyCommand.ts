@@ -1,4 +1,4 @@
-import { PluginKey, EditorState} from 'prosemirror-state';
+import { PluginKey, EditorState } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import { Transform } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
@@ -38,9 +38,9 @@ export function makeKeyMapWithCommon(description: string, common: string): any {
 export function setPluginKey(plugin: any, key: string) {
   if (plugin?.spec) {
     plugin.spec.key = new PluginKey(key + 'Plugin');
-    // if (plugin.spec.key) {
-    //   plugin.spec.key = plugin.spec;
-    // }
+    if (plugin.spec.key) {
+      plugin.spec.key = plugin.spec;
+    }
   }
   return plugin;
 }
