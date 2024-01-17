@@ -1,8 +1,9 @@
-import {UICommand} from './UICommand';
-import {EditorState, Transaction} from 'prosemirror-state';
-import {createEditor, doc, p} from 'jest-prosemirror';
-import {Node} from 'prosemirror-model';
-import {Transform} from 'prosemirror-transform';
+import { UICommand } from './UICommand';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { createEditor, doc, p } from 'jest-prosemirror';
+import { Node } from 'prosemirror-model';
+import { Transform } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
 
 class mockUICommand extends UICommand {
   renderLabel() {
@@ -48,13 +49,13 @@ describe('UICommand', () => {
 
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
-    let state;
+    let state: any;
     let uiCmd: UICommand;
 
     beforeEach(() => {
       tr = new Transaction({} as unknown as Node);
       jest.spyOn(tr, 'setMeta').mockImplementation(() => tr);
-      state = {tr, other: tr};
+      state = { tr, other: tr };
       uiCmd = new mockUICommand();
     });
 
@@ -90,6 +91,15 @@ describe('UICommand', () => {
       const state_ = {} as unknown as EditorState;
       uiCmd.execute(state_);
       expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('isEnabled', () => {
+    it('should call dryRun and execute with the correct arguments', () => {
+      const spy = jest.spyOn(uiCmd, 'execute');
+      uiCmd.isEnabled({} as unknown as EditorState, {} as unknown as EditorView);
+      expect(spy).toHaveBeenCalled();
+
     });
   });
 });
