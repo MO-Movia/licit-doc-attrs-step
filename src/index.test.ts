@@ -1,11 +1,9 @@
 import { SetDocAttrStep } from './index';
 import { AddMarkStep } from 'prosemirror-transform';
-import { createEditor, doc, p, em } from 'jest-prosemirror';
-import { describe, it, expect } from '@jest/globals';
-
+import { em } from 'jest-prosemirror';
+import { Mark } from 'prosemirror-model';
 
 describe('SetDocAttrStep', () => {
-  const editor = createEditor(doc(p('<cursor>')));
   const KEY = 'uniqueKey';
   const VAL = 'uniqueValue';
 
@@ -18,26 +16,31 @@ describe('SetDocAttrStep', () => {
     expect(SetDocAttrStep.register()).toEqual(true);
   });
 
-  describe('when applying', () => {
-    it('should set attibute correctly even if doc attributes different from defaultAttrs', () => {
-      expect(editor.state.doc.attrs[KEY]).toEqual(undefined);
-      editor.state.tr.step(new SetDocAttrStep(KEY, VAL));
-      expect(editor.state.doc.attrs[KEY]).toEqual(VAL);
-    });
-
-    it('should set attibute correctly even if doc attributes different from defaultAttrs', () => {
-      editor.state.doc.attrs = (editor.state.doc.type as any).defaultAttrs;
-      editor.state.tr.step(new SetDocAttrStep(KEY, VAL));
-      expect(editor.state.doc.attrs[KEY]).toEqual(VAL);
-    });
-  });
-
   describe('when merging', () => {
     it('should return null when diff type of type of merged', () => {
-      const markStep = new AddMarkStep(0, 1, em());
+      const markStep = new AddMarkStep(0, 1, em() as unknown as Mark);
       const sdaStep = new SetDocAttrStep(KEY, VAL);
-      const result = sdaStep.merge(markStep as any);
+      const result = sdaStep.merge(markStep as unknown as SetDocAttrStep);
       expect(result).toBeNull();
+    });
+    it('should handle apply', () => {
+      const key = 'exampleKey';
+      const value = 'newValue';
+      const defaultValue = 'defaultValue';
+      const sharedAttrs = {
+        [key]: defaultValue,
+      };
+      const doc = {
+        attrs: { ...sharedAttrs },
+        type: {
+          defaultAttrs: { ...sharedAttrs },
+        },
+      };
+      const sdaStep = new SetDocAttrStep(key, value); // Use key and value instead of KEY and VAL
+      sdaStep.apply(doc);
+      expect(doc.attrs[key]).toBe(value);
+      expect(doc.type.defaultAttrs[key]).toBe(defaultValue); // This should still be the original value
+      expect(doc.attrs).not.toBe(doc.type.defaultAttrs);
     });
 
     it('should return merged step when same step type is merged', () => {
