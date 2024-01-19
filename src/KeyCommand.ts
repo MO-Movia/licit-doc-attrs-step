@@ -39,7 +39,7 @@ export function setPluginKey(plugin: any, key: string) {
   if (plugin?.spec) {
     plugin.spec.key = new PluginKey(key + 'Plugin');
     if (plugin.spec.key) {
-      plugin.spec.key = plugin.spec;
+      plugin.key = plugin.spec.key.key;
     }
   }
   return plugin;

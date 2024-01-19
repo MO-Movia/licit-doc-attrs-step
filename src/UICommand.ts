@@ -1,6 +1,6 @@
-import { EditorState, Selection, Transaction } from 'prosemirror-state';
-import { Transform } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
+import {EditorState, Selection, Transaction} from 'prosemirror-state';
+import {Transform} from 'prosemirror-transform';
+import {EditorView} from 'prosemirror-view';
 
 export type IsActiveCall = (state: EditorState) => boolean;
 
@@ -13,26 +13,18 @@ export const EventType = {
   MOUSEENTER: 'mouseenter',
 };
 
-export class UICommand {
+export abstract class UICommand {
   static EventType = EventType;
 
   shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel = (_state: EditorState): any => {
-    return null;
-  };
+  abstract renderLabel(state: EditorState): any;
 
-  isActive = (_state: EditorState): boolean => {
-    return false;
-  };
+  abstract isActive(state: EditorState): boolean;
 
-  isEnabled = (
-    state: EditorState,
-    view?: EditorView,
-    _menuTitle?: string
-  ): boolean => {
+  isEnabled = (state: EditorState, view?: EditorView): boolean => {
     return this.dryRun(state, view);
   };
 
@@ -41,9 +33,9 @@ export class UICommand {
 
     const dryRunState = fnProxy
       ? new fnProxy(state, {
-        get: this.dryRunEditorStateProxyGetter,
-        set: this.dryRunEditorStateProxySetter,
-      })
+          get: this.dryRunEditorStateProxyGetter,
+          set: this.dryRunEditorStateProxySetter,
+        })
       : state;
 
     return this.execute(dryRunState, undefined, view, null);
@@ -83,34 +75,26 @@ export class UICommand {
     return false;
   };
 
-  waitForUserInput = (
-    _state: EditorState,
-    _dispatch?: (tr: Transform) => void,
-    _view?: EditorView,
-    _event?: any
-  ): Promise<any> => {
-    return Promise.resolve(undefined);
-  };
+  abstract waitForUserInput(
+    state: EditorState,
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    event?: any
+  ): Promise<any>;
 
-  executeWithUserInput = (
-    _state: EditorState,
-    _dispatch?: (tr: Transform) => void,
-    _view?: EditorView,
-    _inputs?: any
-  ): boolean => {
-    return false;
-  };
+  abstract executeWithUserInput(
+    state: EditorState,
+    dispatch?: (tr: Transform) => void,
+    view?: EditorView,
+    inputs?: any
+  ): boolean;
 
-  cancel(): void {
-    // subclass should overwrite this.
-  }
+  abstract cancel(): void;
 
-  executeCustom = (
-    _state: EditorState,
+  abstract executeCustom(
+    state: EditorState,
     tr: Transform,
-    _from: number,
-    _to: number
-  ): Transform => {
-    return tr;
-  };
+    from: number,
+    to: number
+  ): Transform;
 }

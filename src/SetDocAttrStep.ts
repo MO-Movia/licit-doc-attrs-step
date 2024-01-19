@@ -1,6 +1,6 @@
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
-import { Step, StepResult, Mappable } from 'prosemirror-transform';
+import {Step, StepResult} from 'prosemirror-transform';
 
 type SetDocAttrStepJSONValue = {
   key: string;
@@ -30,7 +30,7 @@ export class SetDocAttrStep extends Step {
     // avoid clobbering doc.type.defaultAttrs
     // this shall take care of focus out issue too.
     if (doc.attrs === doc.type.defaultAttrs) {
-      doc.attrs = { ...doc.attrs };
+      doc.attrs = {...doc.attrs};
     }
     doc.attrs[this.key] = this.value;
     return StepResult.ok(doc);
@@ -47,7 +47,7 @@ export class SetDocAttrStep extends Step {
 
   // [FS] IRAD-1010 2020-07-27
   // Handle map properly so that undo works correctly for document attritube changes.
-  map(mapping: Mappable): this {
+  map(): this {
     // position never changes so map should always return same step
     return this;
   }
