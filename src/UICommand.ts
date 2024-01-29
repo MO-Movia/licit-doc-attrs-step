@@ -1,40 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types*/
-
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
 export type IsActiveCall = (state: EditorState) => boolean;
 
-export type FindNodeTypeInSelectionCall = (selection: Selection) => Record<string, unknown>;
+export type FindNodeTypeInSelectionCall = (
+  selection: Selection
+) => Record<string, unknown>;
 
-const EventType = {
+export const EventType = {
   CLICK: 'mouseup',
   MOUSEENTER: 'mouseenter',
 };
 
-class UICommand {
+export abstract class UICommand {
   static EventType = EventType;
 
   shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel = (state: EditorState): any => {
-    return null;
-  };
+  abstract renderLabel(state: EditorState): any;
 
-  isActive = (state: EditorState): boolean => {
-    return false;
-  };
+  abstract isActive(state: EditorState): boolean;
 
-  isEnabled = (
-    state: EditorState,
-    view?: EditorView,
-    menuTitle?: string
-  ): boolean => {
+  isEnabled = (state: EditorState, view?: EditorView): boolean => {
     return this.dryRun(state, view);
   };
 
@@ -85,36 +75,26 @@ class UICommand {
     return false;
   };
 
-  waitForUserInput = (
+  abstract waitForUserInput(
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     event?: any
-  ): Promise<any> => {
-    return Promise.resolve(undefined);
-  };
+  ): Promise<any>;
 
-  executeWithUserInput = (
+  abstract executeWithUserInput(
     state: EditorState,
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     inputs?: any
-  ): boolean => {
-    return false;
-  };
+  ): boolean;
 
-  cancel(): void {
-    // subclass should overwrite this.
-  }
+  abstract cancel(): void;
 
-  executeCustom = (
+  abstract executeCustom(
     state: EditorState,
     tr: Transform,
     from: number,
     to: number
-  ): Transform => {
-    return tr;
-  };
+  ): Transform;
 }
-
-export default UICommand;

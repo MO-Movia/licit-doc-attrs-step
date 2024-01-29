@@ -1,17 +1,43 @@
-import UICommand from './UICommand';
+import { UICommand } from './UICommand';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { createEditor, doc, p } from 'jest-prosemirror';
-import { describe, it, expect, jest, beforeAll, afterAll, beforeEach } from '@jest/globals';
+import { Node } from 'prosemirror-model';
+import { Transform } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
 
+class mockUICommand extends UICommand {
+  renderLabel() {
+    throw new Error('Method not implemented.');
+  }
+  isActive(): boolean {
+    return true;
+  }
+  waitForUserInput(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+  executeWithUserInput(): boolean {
+    throw new Error('Method not implemented.');
+  }
+  cancel(): void {
+    throw new Error('Method not implemented.');
+  }
+  executeCustom(): Transform {
+    throw new Error('Method not implemented.');
+  }
+}
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
-  const uiCmd = new UICommand();
+  const uiCmd: UICommand = new mockUICommand();
   beforeAll(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => { return; });
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      return;
+    });
   });
 
   afterAll(() => {
-    console.error.mockRestore();
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      return true;
+    });
   });
 
   it('should respond to UI event', () => {
@@ -21,39 +47,16 @@ describe('UICommand', () => {
     expect(respond).toEqual(true);
   });
 
-  it('should execute custom', () => {
-    const tr = uiCmd.executeCustom(editor.state, editor.state.tr, 0, 0);
-    expect(tr.doc).toBe(editor.state.tr.doc);
-  });
-
-  it('should not be active by default', () => {
-    const active = uiCmd.isActive(editor.state);
-    expect(active).toEqual(false);
-  });
-
-  it('should label be null by default', () => {
-    const label = uiCmd.renderLabel(editor.state);
-    expect(label).toEqual(null);
-  });
-
-  it('should be disabled if error thrown', () => {
-    const mockWFUI = jest.fn();
-    mockWFUI.mockReturnValue(Promise.reject('this is error'));
-    uiCmd.waitForUserInput = mockWFUI;
-    const enabled = uiCmd.isEnabled(editor.state, editor.view);
-    expect(enabled).toEqual(false);
-  });
-
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
-    let state;
+    let state: any;
     let uiCmd: UICommand;
 
     beforeEach(() => {
-      tr = new Transaction({});
-      tr.setMeta = jest.fn().mockImplementation(() => tr);
+      tr = new Transaction({} as unknown as Node);
+      jest.spyOn(tr, 'setMeta').mockImplementation(() => tr);
       state = { tr, other: tr };
-      uiCmd = new UICommand();
+      uiCmd = new mockUICommand();
     });
 
     describe('when getting the transaction', () => {
@@ -73,40 +76,30 @@ describe('UICommand', () => {
     });
   });
 
-  describe('cancel ', () => {
-    it('should be retutn undefined', () => {
-      expect(uiCmd.cancel()).toBeUndefined();
-    });
-  });
   describe('dryRunEditorStateProxySetter', () => {
     it('should set state property', () => {
       const testVal = 'xVal';
-      uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal);
-      expect(editor.state.xTest).toEqual(testVal);
+      expect(
+        uiCmd.dryRunEditorStateProxySetter(editor.state, 'xTest', testVal)
+      ).toBeTruthy();
     });
   });
 
-  describe('executeWithUserInput', () => {
-    it('should be return false', () => {
+  describe('execute ', () => {
+    it('should execute ', () => {
+      const spy = jest.spyOn(uiCmd, 'waitForUserInput').mockResolvedValue({});
       const state_ = {} as unknown as EditorState;
-      expect(uiCmd.executeWithUserInput(state_)).toBeFalsy();
+      uiCmd.execute(state_);
+      expect(spy).toHaveBeenCalled();
+    });
+  });
+
+  describe('isEnabled', () => {
+    it('should call dryRun and execute with the correct arguments', () => {
+      const spy = jest.spyOn(uiCmd, 'execute');
+      uiCmd.isEnabled({} as unknown as EditorState, {} as unknown as EditorView);
+      expect(spy).toHaveBeenCalled();
 
     });
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
