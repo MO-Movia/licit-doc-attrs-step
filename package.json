@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "1.0.0.rc-0",
+  "version": "1.0.0",
   "type": "module",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
@@ -38,7 +38,7 @@
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
     "copyfiles": "^2.4.1",
-    "eslint": "8.25.0",
+    "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^27.1.2",
     "eslint-plugin-prettier": "^4.2.1",
