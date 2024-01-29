@@ -1,6 +1,8 @@
 module.exports = {
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
+  parser:
+  "@typescript-eslint/parser",
+
+  parserOptions: {
     'sourceType': 'module',
     'allowImportExportEverywhere': false,
     'codeFrame': true,
@@ -8,11 +10,16 @@ module.exports = {
       'jsx': true
     },
   },
-  'plugins': ['@typescript-eslint','react'],
-  'extends': [
-    'plugin:@typescript-eslint/recommended'
+
+  plugins: ['@typescript-eslint', 'react'],
+
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
-  'rules': {
+
+  rules: {
     'react/jsx-sort-props': 'error',
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
@@ -32,7 +39,8 @@ module.exports = {
     'semi': [2, 'always'],
     'strict': 0
   },
-  'globals': {
+
+  globals: {
     '__dirname': false,
     '$ReadOnlyArray': false,
     'Blob': false,
@@ -77,7 +85,8 @@ module.exports = {
     'setTimeout': false,
     'window': false
   },
-  'overrides': [
+
+  overrides: [
     {
       // enable jest globals in test files
       files: '*.test.ts',
@@ -87,4 +96,5 @@ module.exports = {
       }
     }
   ]
-};
+
+}
