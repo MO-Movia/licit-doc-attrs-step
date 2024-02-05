@@ -52,8 +52,8 @@
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.4",
-    "stylelint": "^13.7.2",
-    "stylelint-config-standard": "^22.0.0",
+    "stylelint": "^16.2.1",
+    "stylelint-config-standard": "^36.0.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.2.0",
     "typescript": "^5.2.0"
