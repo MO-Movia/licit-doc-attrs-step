@@ -20,9 +20,13 @@ export abstract class UICommand {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  abstract renderLabel(state: EditorState): any;
+  renderLabel(state: EditorState): any {
+    return null;
+  }
 
-  abstract isActive(state: EditorState): boolean;
+  isActive(_state: EditorState): boolean {
+    return true;
+  }
 
   isEnabled = (state: EditorState, view?: EditorView): boolean => {
     return this.dryRun(state, view);
