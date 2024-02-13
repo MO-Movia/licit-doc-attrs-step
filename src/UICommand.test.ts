@@ -1,17 +1,11 @@
-import { UICommand } from './UICommand';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { createEditor, doc, p } from 'jest-prosemirror';
-import { Node } from 'prosemirror-model';
-import { Transform } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
+import {UICommand} from './UICommand';
+import {EditorState, Transaction} from 'prosemirror-state';
+import {createEditor, doc, p} from 'jest-prosemirror';
+import {Node} from 'prosemirror-model';
+import {Transform} from 'prosemirror-transform';
+import {EditorView} from 'prosemirror-view';
 
 class mockUICommand extends UICommand {
-  renderLabel() {
-    throw new Error('Method not implemented.');
-  }
-  isActive(): boolean {
-    return true;
-  }
   waitForUserInput(): Promise<any> {
     throw new Error('Method not implemented.');
   }
@@ -47,6 +41,14 @@ describe('UICommand', () => {
     expect(respond).toEqual(true);
   });
 
+  it('should by default be active', () => {
+    expect(uiCmd.isActive(null as unknown as EditorState)).toBeTruthy();
+  });
+
+  it('should by default not render label', () => {
+    expect(uiCmd.renderLabel(null as unknown as EditorState)).toBeFalsy();
+  });
+
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
     let state: any;
@@ -55,7 +57,7 @@ describe('UICommand', () => {
     beforeEach(() => {
       tr = new Transaction({} as unknown as Node);
       jest.spyOn(tr, 'setMeta').mockImplementation(() => tr);
-      state = { tr, other: tr };
+      state = {tr, other: tr};
       uiCmd = new mockUICommand();
     });
 
@@ -97,9 +99,11 @@ describe('UICommand', () => {
   describe('isEnabled', () => {
     it('should call dryRun and execute with the correct arguments', () => {
       const spy = jest.spyOn(uiCmd, 'execute');
-      uiCmd.isEnabled({} as unknown as EditorState, {} as unknown as EditorView);
+      uiCmd.isEnabled(
+        {} as unknown as EditorState,
+        {} as unknown as EditorView
+      );
       expect(spy).toHaveBeenCalled();
-
     });
   });
 });
