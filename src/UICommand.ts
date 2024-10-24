@@ -1,3 +1,4 @@
+import { Editor } from '@tiptap/core';
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
@@ -15,24 +16,35 @@ export const EventType = {
 
 export abstract class UICommand {
   static EventType = EventType;
+  static theme:string;
+  protected _editor: Editor|null =null;
+   // Getter for the editor instance
+   get editor(): Editor|null {
+    return this._editor;
+  }
+
+  // Setter for the editor instance
+  set editor(editor: Editor) {
+    this._editor = editor;
+  }
 
   shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel(state: EditorState): any {
+  renderLabel(state?: EditorState): any {
     return null;
   }
 
-  isActive(_state: EditorState): boolean {
+  isActive(_state?: EditorState): boolean {
     return true;
   }
 
-  isEnabled = (state: EditorState, view?: EditorView): boolean => {
+  isEnabled = (state: EditorState, view?: EditorView): boolean|Transform => {
     return this.dryRun(state, view);
   };
 
-  dryRun = (state: EditorState, view?: EditorView): boolean => {
+  dryRun = (state: EditorState, view?: EditorView): boolean|Transform => {
     const fnProxy = typeof window !== 'undefined' && window['Proxy'];
 
     const dryRunState = fnProxy
@@ -68,7 +80,7 @@ export abstract class UICommand {
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     event?: any
-  ): boolean => {
+  ): Transform|boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
         this.executeWithUserInput(state, dispatch, view, inputs);
