@@ -14,7 +14,8 @@
     "pretty": false,
     "esModuleInterop": true,
     "types": [
-      "jest"
+      "jest",
+      "node"
     ],
     // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true
