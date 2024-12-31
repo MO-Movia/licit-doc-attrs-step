@@ -27,13 +27,17 @@ export class SetDocAttrStep extends Step {
 
   apply(doc: any): StepResult {
     this.prevValue = doc.attrs[this.key];
-    // avoid clobbering doc.type.defaultAttrs
-    // this shall take care of focus out issue too.
-    if (doc.attrs === doc.type.defaultAttrs) {
-      doc.attrs = {...doc.attrs};
-    }
-    doc.attrs[this.key] = this.value;
-    return StepResult.ok(doc);
+    // KNITE-1505 2024-12-30 Fix for the issue-After creating a citation, it can't be deleted from the document.
+    const newattrs :any = {};
+    Object.assign(newattrs, doc.attrs);
+    newattrs[this.key] = this.value;
+    const newDoc = doc.type.create(
+      { ...doc.attrs, ...newattrs }, // Merge old and new attributes
+      doc.content,
+      doc.marks
+    );
+
+    return StepResult.ok(newDoc);
   }
 
   invert(): SetDocAttrStep {
