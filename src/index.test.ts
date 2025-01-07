@@ -44,14 +44,12 @@ describe('SetDocAttrStep', () => {
       const sdaStep = new SetDocAttrStep(key, value);
       const result = sdaStep.apply(doc);
 
-      if (!result.doc) {
-        throw new Error('Expected result.doc to be defined but got null.');
-      }
+      expect(result.doc).toBeDefined();
 
       const newDoc = result.doc;
 
-      expect(newDoc.attrs[key]).toBe(value);
-      expect(newDoc.attrs).not.toBe(doc.attrs);
+      expect(newDoc?.attrs[key]).toBe(value);
+      expect(newDoc?.attrs).not.toBe(doc.attrs);
     });
 
     it('should return merged step when same step type is merged', () => {
