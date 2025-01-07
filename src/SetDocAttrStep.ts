@@ -1,7 +1,6 @@
 // [FS] IRAD-??? 2020-10-19
 // Plugin to handle automatic assign unique id to the block nodes.
-import {Step, StepResult} from 'prosemirror-transform';
-import { Node } from 'prosemirror-model';
+import { Step, StepResult } from 'prosemirror-transform';
 
 type SetDocAttrStepJSONValue = {
   key: string;
