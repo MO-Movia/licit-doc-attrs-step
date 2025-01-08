@@ -13,9 +13,6 @@
     "outDir": "dist",
     "pretty": false,
     "esModuleInterop": true,
-    "types": [
-      "jest"
-    ],
     // Ensure that .d.ts files are created by tsc, but not .js files
     "declaration": true
   },
