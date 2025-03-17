@@ -87,8 +87,8 @@ describe('UICommand', () => {
     });
   });
 
-  describe('execute ', () => {
-    it('should execute ', () => {
+  describe('execute', () => {
+    it('should execute', () => {
       const spy = jest.spyOn(uiCmd, 'waitForUserInput').mockResolvedValue({});
       const state_ = {} as unknown as EditorState;
       uiCmd.execute(state_);
