@@ -5,7 +5,7 @@ import {Node} from 'prosemirror-model';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
-class mockUICommand extends UICommand {
+class MockUICommand extends UICommand {
   waitForUserInput(): Promise<any> {
     throw new Error('Method not implemented.');
   }
@@ -21,7 +21,7 @@ class mockUICommand extends UICommand {
 }
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
-  const uiCmd: UICommand = new mockUICommand();
+  const uiCmd: UICommand = new MockUICommand();
   beforeAll(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {
       return;
@@ -58,7 +58,7 @@ describe('UICommand', () => {
       tr = new Transaction({} as unknown as Node);
       jest.spyOn(tr, 'setMeta').mockImplementation(() => tr);
       state = {tr, other: tr};
-      uiCmd = new mockUICommand();
+      uiCmd = new MockUICommand();
     });
 
     describe('when getting the transaction', () => {
