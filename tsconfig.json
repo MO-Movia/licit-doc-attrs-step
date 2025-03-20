@@ -1,16 +1,20 @@
 {
   "compilerOptions": {
     "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": false,
     "jsx": "react",
     "target": "ES2022",
     "module": "esnext",
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "lib": [
       "es2018",
       "dom"
     ],
     "outDir": "dist",
+    "rootDir": "src",
+    "skipLibCheck": true,
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
     "pretty": false,
     "esModuleInterop": true,
     // Ensure that .d.ts files are created by tsc, but not .js files
@@ -19,11 +23,7 @@
   "typeAcquisition": {
     "enable": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.test.ts"
-  ],
+  "files": [
+    "src/index.ts"
+  ]
 }

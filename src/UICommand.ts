@@ -14,13 +14,13 @@ export const EventType = {
 };
 
 export abstract class UICommand {
-  static EventType = EventType;
+  static readonly EventType = EventType;
 
   shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel(state: EditorState): any {
+  renderLabel(_state: EditorState): any {
     return null;
   }
 
