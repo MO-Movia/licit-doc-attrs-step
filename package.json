@@ -29,7 +29,7 @@
     "prosemirror-view": "^1.27.0"
   },
   "devDependencies": {
-    "@cyclonedx/cyclonedx-npm": "^1.11.0",
+    "@cyclonedx/cyclonedx-npm": "^2.1.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@types/jest": "^29.1.2",
     "copyfiles": "^2.4.1",
