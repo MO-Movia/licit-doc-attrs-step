@@ -56,7 +56,7 @@
     "stylelint-config-standard": "^36.0.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.2.0",
-    "typescript": "^5.2.0"
+    "typescript": "5.5.4"
   },
   "overrides": {
     "semver": "^7.5.2",
@@ -82,6 +82,6 @@
     ]
   },
   "dependencies": {
-    "@tiptap/core": "^2.3.0"
+    "@tiptap/core": "^2.9.1"
   }
 }

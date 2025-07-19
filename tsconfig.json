@@ -6,6 +6,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
     "lib": [
       "es2018",
       "dom"
