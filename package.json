@@ -9,7 +9,7 @@
   "types": "index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MO-Movia/licit-doc-attrs-step.git"
+    "url": "https://github.com/MO-Movia/licit-doc-attrs-step"
   },
   "scripts": {
     "lint": "eslint src --max-warnings=27",
