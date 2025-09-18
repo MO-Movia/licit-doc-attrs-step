@@ -18,6 +18,9 @@ class MockUICommand extends UICommand {
   executeCustom(): Transform {
     throw new Error('Method not implemented.');
   }
+  executeCustomStyleForTable(): Transform {
+    throw new Error('Method not implemented.');
+  }
 }
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
