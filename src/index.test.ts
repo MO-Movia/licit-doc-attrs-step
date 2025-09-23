@@ -31,16 +31,25 @@ describe('SetDocAttrStep', () => {
         [key]: defaultValue,
       };
       const doc = {
-        attrs: { ...sharedAttrs },
+        attrs: {...sharedAttrs},
         type: {
-          defaultAttrs: { ...sharedAttrs },
+          create(attrs: any, content: any = null, marks: any = null) {
+            return {attrs, content, marks, type: this};
+          },
         },
+        content: null,
+        marks: [],
       };
-      const sdaStep = new SetDocAttrStep(key, value); // Use key and value instead of KEY and VAL
-      sdaStep.apply(doc);
-      expect(doc.attrs[key]).toBe(value);
-      expect(doc.type.defaultAttrs[key]).toBe(defaultValue); // This should still be the original value
-      expect(doc.attrs).not.toBe(doc.type.defaultAttrs);
+
+      const sdaStep = new SetDocAttrStep(key, value);
+      const result = sdaStep.apply(doc);
+
+      expect(result.doc).toBeDefined();
+
+      const newDoc = result.doc;
+
+      expect(newDoc?.attrs[key]).toBe(value);
+      expect(newDoc?.attrs).not.toBe(doc.attrs);
     });
 
     it('should return merged step when same step type is merged', () => {

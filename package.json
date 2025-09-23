@@ -1,6 +1,7 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
   "version": "1.0.2",
+  "license": "MIT",
   "type": "module",
   "subversion": "1",
   "description": "Module that extend Step, overriding the apply, invert, map, getMap and fromJSON methods, and registering your class with a unique JSON-serialization identifier using Step.jsonID.",
@@ -11,17 +12,14 @@
     "url": "git+https://github.com/MO-Movia/licit-doc-attrs-step.git"
   },
   "scripts": {
-    "build:clean": "rm -rf dist/ && rm -f modusoperandi-licit-doc-attrs-step-*.*.*.tgz",
-    "build:ts": "tsc -p tsconfig.json",
-    "build:babel": "babel src --out-dir dist --extensions .ts",
-    "build:dist": "npm run build:clean && npm run build:ts && npm run webpack && npm run build:babel",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint src --max-warnings=27",
     "test": "jest --coverage",
     "test:unit": "jest",
     "test:coverage": "jest --coverage",
-    "ci:build": "tsc --build && copyfiles package.json dist",
+    "ci:build": "tsc --build --clean && tsc --build && copyfiles package.json LICENSE .npmignore dist",
     "ci:bom": "cyclonedx-npm --ignore-npm-errors --short-PURLs --output-format XML --output-file dist/bom.xml",
-    "debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i"
+    "debug": "node --debug-brk --inspect ./node_modules/.bin/jest -i",
+    "verify": "npm run lint -- --fix && npm run test:coverage && npm run ci:build && echo 'All Tests Passed!'"
   },
   "peerDependencies": {
     "prosemirror-keymap": "^1.2.0",
@@ -31,7 +29,7 @@
     "prosemirror-view": "^1.27.0"
   },
   "devDependencies": {
-    "@cyclonedx/cyclonedx-npm": "^1.11.0",
+    "@cyclonedx/cyclonedx-npm": "^3.0.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@types/jest": "^29.1.2",
     "@types/node": "^20.11.10",
@@ -59,8 +57,7 @@
     "typescript": "5.5.4"
   },
   "overrides": {
-    "semver": "^7.5.2",
-    "postcss": "^8.4.31"
+    "libxmljs2": "^1.0.0"
   },
   "importSort": {
     ".js": {
