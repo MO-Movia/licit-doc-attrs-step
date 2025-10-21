@@ -23,34 +23,48 @@ describe('SetDocAttrStep', () => {
       const result = sdaStep.merge(markStep as unknown as SetDocAttrStep);
       expect(result).toBeNull();
     });
-    it('should handle apply', () => {
-      const key = 'exampleKey';
-      const value = 'newValue';
-      const defaultValue = 'defaultValue';
-      const sharedAttrs = {
-        [key]: defaultValue,
-      };
-      const doc = {
-        attrs: {...sharedAttrs},
-        type: {
-          create(attrs: any, content: any = null, marks: any = null) {
-            return {attrs, content, marks, type: this};
-          },
-        },
-        content: null,
-        marks: [],
-      };
+ it('should handle apply', () => {
+  const key = 'exampleKey';
+  const value = 'newValue';
+  const defaultValue = 'defaultValue';
+  const sharedAttrs = {
+    [key]: defaultValue,
+  };
 
-      const sdaStep = new SetDocAttrStep(key, value);
-      const result = sdaStep.apply(doc);
+  // Define a minimal type that matches what SetDocAttrStep.apply expects
+  type DocType = {
+    attrs: Record<string, unknown>;
+    type: {
+      create: (attrs: Record<string, unknown>, content: unknown, marks: unknown) => DocType;
+    };
+    content: unknown;
+    marks: unknown;
+  };
 
-      expect(result.doc).toBeDefined();
+  const doc: DocType = {
+    attrs: { ...sharedAttrs },
+    type: {
+      create: (attrs, content, marks) => ({
+        attrs,
+        content,
+        marks,
+        type: doc.type, // safe reference
+      }),
+    },
+    content: null,
+    marks: [],
+  };
 
-      const newDoc = result.doc;
+  const sdaStep = new SetDocAttrStep(key, value);
+  const result = sdaStep.apply(doc);
 
-      expect(newDoc?.attrs[key]).toBe(value);
-      expect(newDoc?.attrs).not.toBe(doc.attrs);
-    });
+  expect(result.doc).toBeDefined();
+
+  const newDoc = result.doc as DocType;
+
+  expect(newDoc.attrs[key]).toBe(value);
+  expect(newDoc.attrs).not.toBe(doc.attrs);
+});
 
     it('should return merged step when same step type is merged', () => {
       const sdaStep1 = new SetDocAttrStep('oldkey', 'oldVal');

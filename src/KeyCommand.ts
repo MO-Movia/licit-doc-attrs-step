@@ -35,7 +35,7 @@ export function makeKeyMapWithCommon(description: string, common: string): any {
 // [FS] IRAD-1005 2020-07-07
 // Upgrade outdated packages.
 // set plugin keys so that to avoid duplicate key error when keys are assigned automatically.
-export function setPluginKey(plugin: any, key: string): any {
+export function setPluginKey(plugin: any, key: string) {
   if (plugin?.spec) {
     plugin.spec.key = new PluginKey(key + 'Plugin');
     if (plugin.spec.key) {
@@ -45,6 +45,6 @@ export function setPluginKey(plugin: any, key: string): any {
   return plugin;
 }
 
-export function createKeyMapPlugin(pluginKeyMap: any, name: string): any {
+export function createKeyMapPlugin(pluginKeyMap: any, name: string) {
   return setPluginKey(keymap(pluginKeyMap), name);
 }
