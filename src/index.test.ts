@@ -55,16 +55,16 @@ describe('SetDocAttrStep', () => {
     marks: [],
   };
 
-  const sdaStep = new SetDocAttrStep(key, value);
-  const result = sdaStep.apply(doc);
+      const sdaStep = new SetDocAttrStep(key, value);
+      const result = sdaStep.apply(doc);
 
-  expect(result.doc).toBeDefined();
+      expect(result.doc).toBeDefined();
 
-  const newDoc = result.doc as DocType;
+      const newDoc = result.doc;
 
-  expect(newDoc.attrs[key]).toBe(value);
-  expect(newDoc.attrs).not.toBe(doc.attrs);
-});
+      expect(newDoc?.attrs[key]).toBe(value);
+      expect(newDoc?.attrs).not.toBe(doc.attrs);
+    });
 
     it('should return merged step when same step type is merged', () => {
       const sdaStep1 = new SetDocAttrStep('oldkey', 'oldVal');

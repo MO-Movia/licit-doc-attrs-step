@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/core';
+import {Editor} from '@tiptap/core';
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
@@ -15,11 +15,13 @@ export const EventType = {
 };
 
 export abstract class UICommand {
-  static EventType = EventType;
-  static theme:string;
-  protected _editor: Editor|null =null;
-   // Getter for the editor instance
-   get editor(): Editor|null {
+  static readonly EventType = EventType;
+  // eslint-disable-next-line sonarjs/public-static-readonly
+  static theme: string;
+
+  protected _editor: Editor | null = null;
+  // Getter for the editor instance
+  get editor(): Editor | null {
     return this._editor;
   }
 
@@ -28,23 +30,23 @@ export abstract class UICommand {
     this._editor = editor;
   }
 
-  shouldRespondToUIEvent = (e: any): boolean => {
+  shouldRespondToUIEvent = (e:any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel(state?: EditorState): any {
-    return null;
+  renderLabel(state?: EditorState): unknown {
+    return state;
   }
 
   isActive(_state?: EditorState): boolean {
     return true;
   }
 
-  isEnabled = (state: EditorState, view?: EditorView): boolean|Transform => {
+  isEnabled = (state: EditorState, view?: EditorView): boolean | Transform => {
     return this.dryRun(state, view);
   };
 
-  dryRun = (state: EditorState, view?: EditorView): boolean|Transform => {
+  dryRun = (state: EditorState, view?: EditorView): boolean | Transform => {
     const fnProxy = typeof window !== 'undefined' && window['Proxy'];
 
     const dryRunState = fnProxy
@@ -80,7 +82,7 @@ export abstract class UICommand {
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     event?: any
-  ): Transform|boolean => {
+  ): Transform | boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
         this.executeWithUserInput(state, dispatch, view, inputs);
@@ -108,6 +110,13 @@ export abstract class UICommand {
   abstract cancel(): void;
 
   abstract executeCustom(
+    state: EditorState,
+    tr: Transform,
+    from: number,
+    to: number
+  ): Transform;
+
+  abstract executeCustomStyleForTable(
     state: EditorState,
     tr: Transform,
     from: number,

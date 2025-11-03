@@ -1,68 +1,92 @@
+import {Plugin, PluginKey} from 'prosemirror-state';
+import {keymap} from 'prosemirror-keymap';
 import {
   makeKeyMap,
   makeKeyMapWithCommon,
-  createKeyMapPlugin,
   setPluginKey,
+  createKeyMapPlugin,
 } from './KeyCommand';
-import * as PM from 'prosemirror-state';
-import {Transform} from 'prosemirror-transform';
-import {createEditor, doc, p} from 'jest-prosemirror';
 
-describe('KeyCommand', () => {
-  const HELLO = 'hello';
-  const executeMock = jest.fn(
-    (state: PM.EditorState, dispatch?: (tr: Transform) => void): boolean => {
-      if (dispatch) {
-        dispatch(state.tr.insertText(HELLO));
-      }
-      return false;
-    }
-  );
+jest.mock('prosemirror-keymap', () => ({
+  keymap: jest.fn((map) => ({spec: {map}, keymapCreated: true})),
+}));
 
-  let plugin = createKeyMapPlugin(
-    {
-      ['Mod-A']: executeMock,
-    },
-    ''
-  );
+describe('keymap-utils', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-  it('should plugin key map work', () => {
-    createEditor(doc(p('<cursor>')), {plugins: [plugin]})
-      .shortcut('Mod-A')
-      .callback((content) => {
-        expect(content.state.doc).toBeDefined();
+  describe('makeKeyMap', () => {
+    it('should return an object with description, windows, mac, and common', () => {
+      const result = makeKeyMap('Bold', 'Ctrl-B', 'Cmd-B', 'Mod-B');
+      expect(result).toEqual({
+        description: 'Bold',
+        windows: 'Ctrl-B',
+        mac: 'Cmd-B',
+        common: 'Mod-B',
       });
+    });
+
+    it('should allow common to be undefined', () => {
+      const result = makeKeyMap('Italic', 'Ctrl-I', 'Cmd-I');
+      expect(result).toEqual({
+        description: 'Italic',
+        windows: 'Ctrl-I',
+        mac: 'Cmd-I',
+        common: undefined,
+      });
+    });
   });
 
-  const NAME = 'Citation';
-  const KEY = NAME + 'Plugin$';
+  describe('makeKeyMapWithCommon', () => {
+    it('should replace Mod with Ctrl on Windows and Cmd on Mac', () => {
+      const result = makeKeyMapWithCommon('Save', 'Mod-S');
+      expect(result).toEqual({
+        description: 'Save',
+        windows: 'Ctrl-S',
+        mac: 'Cmd-S',
+        common: 'Mod-S',
+      });
+    });
 
-  // Add this at the top of your test file
-  class MockPluginKey {
-    key: string;
-
-    constructor(key: string) {
-      this.key = key;
-    }
-  }
-
-  it('should set Plugin key when plugin having spec', () => {
-    const pluginKey = new MockPluginKey(NAME + 'Plugin$');
-    plugin = {spec: {key: pluginKey}, key: pluginKey.key};
-    expect(plugin.key).toEqual(NAME + 'Plugin$');
+    it('should handle lowercase "mod"', () => {
+      const result = makeKeyMapWithCommon('Undo', 'mod-Z');
+      expect(result).toEqual({
+        description: 'Undo',
+        windows: 'Ctrl-Z',
+        mac: 'Cmd-Z',
+        common: 'mod-Z',
+      });
+    });
   });
 
-  it('should set plugin key when plugin spec is not set', () => {
-    plugin.spec = undefined;
-    plugin.key = undefined;
-    plugin = setPluginKey(plugin, NAME);
-    expect(plugin.key).not.toEqual(KEY);
+  describe('setPluginKey', () => {
+    it('should set PluginKey on plugin.spec and return the plugin', () => {
+      const plugin = {spec: {}} as unknown as Plugin;
+      const result = setPluginKey(plugin, 'testKey');
+
+      expect(result).toBe(plugin);
+      expect(plugin.spec.key).toBeInstanceOf(PluginKey);
+    });
+
+    it('should return plugin unchanged if spec is missing', () => {
+      const plugin = {} as unknown as Plugin;
+      const result = setPluginKey(plugin, 'noSpec');
+      expect(result).toBe(plugin);
+      expect((plugin as any).spec).toBeUndefined();
+    });
   });
 
-  it('should handle os based key map', () => {
-    const TRIAL = 'Trial';
-    const keymap0 = makeKeyMap(TRIAL, 'Alt-0', 'Alt-0', 'Alt-0');
-    const keymap1 = makeKeyMapWithCommon(TRIAL, 'Alt-0');
-    expect(keymap0).toEqual(keymap1);
+  describe('createKeyMapPlugin', () => {
+    it('should create keymap plugin and set PluginKey', () => {
+      const fakeMap = {'Mod-b': jest.fn()};
+      const result = createKeyMapPlugin(fakeMap, 'bold');
+
+      // ensure keymap() was called
+      expect(keymap).toHaveBeenCalledWith(fakeMap);
+
+      // ensure returned plugin has key set
+      expect(result).toHaveProperty('spec.key');
+    });
   });
 });

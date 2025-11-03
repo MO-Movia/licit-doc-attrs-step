@@ -18,6 +18,9 @@ class MockUICommand extends UICommand {
   executeCustom(): Transform {
     throw new Error('Method not implemented.');
   }
+  executeCustomStyleForTable(): Transform {
+    throw new Error('Method not implemented.');
+  }
 }
 describe('UICommand', () => {
   const editor = createEditor(doc(p('<cursor>')));
@@ -37,7 +40,7 @@ describe('UICommand', () => {
   it('should respond to UI event', () => {
     const respond = uiCmd.shouldRespondToUIEvent({
       type: UICommand.EventType.CLICK,
-    });
+    } as Event);
     expect(respond).toEqual(true);
   });
 
