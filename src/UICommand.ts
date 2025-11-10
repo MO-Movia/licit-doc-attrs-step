@@ -30,12 +30,12 @@ export abstract class UICommand {
     this._editor = editor;
   }
 
-  shouldRespondToUIEvent = (e:any): boolean => {
+  shouldRespondToUIEvent = (e: any): boolean => {
     return e.type === UICommand.EventType.CLICK;
   };
 
-  renderLabel(state?: EditorState): unknown {
-    return state;
+  renderLabel(_state?: EditorState): any {
+    return null;
   }
 
   isActive(_state?: EditorState): boolean {
