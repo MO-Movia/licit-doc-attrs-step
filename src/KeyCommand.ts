@@ -1,4 +1,4 @@
-import {PluginKey, EditorState} from 'prosemirror-state';
+import {Plugin, PluginKey, EditorState} from 'prosemirror-state';
 import {keymap} from 'prosemirror-keymap';
 import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
@@ -11,6 +11,13 @@ export type UserKeyCommand = (
 
 export type UserKeyMap = {
   [key: string]: UserKeyCommand;
+};
+
+type PluginWithSpec = Plugin & {
+  spec: {
+    key?: PluginKey;
+  };
+  key?: string; // Store the string name
 };
 
 export function makeKeyMap(
@@ -35,16 +42,16 @@ export function makeKeyMapWithCommon(description: string, common: string): any {
 // [FS] IRAD-1005 2020-07-07
 // Upgrade outdated packages.
 // set plugin keys so that to avoid duplicate key error when keys are assigned automatically.
-export function setPluginKey(plugin: any, key: string) {
-  if (plugin?.spec) {
-    plugin.spec.key = new PluginKey(key + 'Plugin');
-    if (plugin.spec.key) {
-      plugin.key = plugin.spec.key.key;
-    }
+export function setPluginKey(plugin: Plugin, key: string): Plugin {
+  const pluginWithSpec = plugin as PluginWithSpec;
+
+  if (pluginWithSpec?.spec) {
+    pluginWithSpec.spec.key = new PluginKey(key + 'Plugin');
+    pluginWithSpec.key = key + 'Plugin'; // Store the string name
   }
   return plugin;
 }
 
-export function createKeyMapPlugin(pluginKeyMap: any, name: string) {
+export function createKeyMapPlugin(pluginKeyMap: any, name: string): Plugin {
   return setPluginKey(keymap(pluginKeyMap), name);
 }
