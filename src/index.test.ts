@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import { SetDocAttrStep } from './index';
 import { AddMarkStep } from 'prosemirror-transform';
 import { em } from 'jest-prosemirror';
@@ -23,34 +28,51 @@ describe('SetDocAttrStep', () => {
       const result = sdaStep.merge(markStep as unknown as SetDocAttrStep);
       expect(result).toBeNull();
     });
-    it('should handle apply', () => {
-      const key = 'exampleKey';
-      const value = 'newValue';
-      const defaultValue = 'defaultValue';
-      const sharedAttrs = {
-        [key]: defaultValue,
+  it('should handle apply', () => {
+    const key = 'exampleKey';
+    const value = 'newValue';
+    const defaultValue = 'defaultValue';
+
+    const sharedAttrs = { [key]: defaultValue };
+
+    type MockNode = {
+      attrs: Record<string, unknown>;
+      content: unknown;
+      marks: unknown;
+      type: {
+        create(
+          attrs: Record<string, unknown>,
+          content?: unknown,
+          marks?: unknown
+        ): MockNode;
       };
-      const doc = {
-        attrs: {...sharedAttrs},
-        type: {
-          create(attrs: any, content: any = null, marks: any = null) {
-            return {attrs, content, marks, type: this};
-          },
+    };
+
+    const doc: MockNode = {
+      attrs: { ...sharedAttrs },
+      type: {
+        create(
+          attrs: Record<string, unknown>,
+          content: unknown = null,
+          marks: unknown = null
+        ): MockNode {
+          return { attrs, content, marks, type: this };
         },
-        content: null,
-        marks: [],
-      };
+      },
+      content: null,
+      marks: [],
+    };
 
-      const sdaStep = new SetDocAttrStep(key, value);
-      const result = sdaStep.apply(doc);
+    const sdaStep = new SetDocAttrStep(key, value);
+    const result = sdaStep.apply(doc);
 
-      expect(result.doc).toBeDefined();
+    expect(result.doc).toBeDefined();
 
-      const newDoc = result.doc;
+    const newDoc = result.doc;
 
-      expect(newDoc?.attrs[key]).toBe(value);
-      expect(newDoc?.attrs).not.toBe(doc.attrs);
-    });
+    expect(newDoc?.attrs[key]).toBe(value);
+    expect(newDoc?.attrs).not.toBe(doc.attrs);
+  });
 
     it('should return merged step when same step type is merged', () => {
       const sdaStep1 = new SetDocAttrStep('oldkey', 'oldVal');

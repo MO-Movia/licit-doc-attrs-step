@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {
   makeKeyMap,
   makeKeyMapWithCommon,
@@ -27,7 +32,14 @@ describe('KeyCommand', () => {
   );
 
   it('should plugin key map work', () => {
-    createEditor(doc(p('<cursor>')), {plugins: [plugin]})
+    const plugins = createKeyMapPlugin(
+      {
+        ['Mod-A']: executeMock,
+      },
+      ''
+    );
+
+    createEditor(doc(p('<cursor>')), { plugins })
       .shortcut('Mod-A')
       .callback((content) => {
         expect(content.state.doc).toBeDefined();
