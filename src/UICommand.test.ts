@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {UICommand} from './UICommand';
 import {EditorState, Transaction} from 'prosemirror-state';
 import {createEditor, doc, p} from 'jest-prosemirror';
@@ -6,7 +11,7 @@ import {Transform} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
 class MockUICommand extends UICommand {
-  waitForUserInput(): Promise<any> {
+  waitForUserInput(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   executeWithUserInput(): boolean {
@@ -54,7 +59,7 @@ describe('UICommand', () => {
 
   describe('dryRunEditorStateProxyGetter', () => {
     let tr: Transaction;
-    let state: any;
+    let state: Pick<EditorState, 'tr'> & Record<string, unknown>;
     let uiCmd: UICommand;
 
     beforeEach(() => {

@@ -1,6 +1,6 @@
 {
   "name": "@modusoperandi/licit-doc-attrs-step",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "license": "MIT",
   "type": "module",
   "subversion": "1",
@@ -12,7 +12,7 @@
     "url": "https://github.com/MO-Movia/licit-doc-attrs-step"
   },
   "scripts": {
-    "lint": "eslint src --max-warnings=27",
+    "lint": "eslint src --max-warnings=23",
     "test": "jest --coverage",
     "test:unit": "jest",
     "test:coverage": "jest --coverage",
@@ -29,24 +29,24 @@
     "prosemirror-view": "^1.27.0"
   },
   "devDependencies": {
-    "@cyclonedx/cyclonedx-npm": "^4.0.2",
-    "@testing-library/jest-dom": "^6.8.0",
+    "@cyclonedx/cyclonedx-npm": "^4.1.2",
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/jest": "^30.0.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^9.35.0",
-    "@modusoperandi/eslint-config": "^2.1.4",
+    "eslint": "^9.39.2",
+    "@modusoperandi/eslint-config": "^3.0.3",
     "husky": "^9.1.7",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^30.1.3",
-    "jest-environment-jsdom": "^30.1.2",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
     "jest-junit": "^16.0.0",
     "jest-prosemirror": "^3.0.1",
     "jest-sonar-reporter": "^2.0.0",
-    "lint-staged": "^16.1.6",
-    "prettier": "^3.6.2",
-    "ts-jest": "^29.4.3",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "ts-jest": "^29.4.6",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "libxmljs2": "^1.0.0"

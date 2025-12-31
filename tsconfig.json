@@ -23,7 +23,5 @@
   "typeAcquisition": {
     "enable": true
   },
-  "files": [
-    "src/index.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }
