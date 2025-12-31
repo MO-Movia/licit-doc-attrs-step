@@ -12,7 +12,7 @@
     "url": "https://github.com/MO-Movia/licit-doc-attrs-step"
   },
   "scripts": {
-    "lint": "eslint src --max-warnings=27",
+    "lint": "eslint src --max-warnings=23",
     "test": "jest --coverage",
     "test:unit": "jest",
     "test:coverage": "jest --coverage",

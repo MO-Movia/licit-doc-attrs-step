@@ -51,17 +51,14 @@ export function setPluginKey(plugin: any, key: string): any {
 }
 
 export function createKeyMapPlugin(
-  pluginKeyMap: any | Array<{ map: any; name: string }>, //NOSONAR
+  pluginKeyMap: any | Array<{ map: any; name: string }>,
   name?: string
 ): any {
-  const makePlugin = (map: any, pluginName: string) =>
-    setPluginKey(keymap(map), pluginName);
-
   if (Array.isArray(pluginKeyMap)) {
     // return a flat array of plugins
-    return pluginKeyMap.map(({ map, name }) => makePlugin(map, name));
+    return pluginKeyMap.map(({ map, name }) => setPluginKey(keymap(map), name) as object);
   }
 
   // single map fallback (for backward compatibility)
-  return [makePlugin(pluginKeyMap, name || 'UnnamedKeyMap')];
+  return [setPluginKey(keymap(pluginKeyMap), name || 'UnnamedKeyMap')];
 }

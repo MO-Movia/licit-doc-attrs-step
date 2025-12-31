@@ -8,8 +8,6 @@ module.exports = [
     rules: {
       //Include any rule overrides here!
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-redundant-type-constituents': 'warn',
-      '@typescript-eslint/no-unsafe-return': 'warn',
     },
   },
 ];
