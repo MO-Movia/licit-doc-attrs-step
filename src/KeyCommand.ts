@@ -50,8 +50,14 @@ export function setPluginKey(plugin: any, key: string): any {
   return plugin;
 }
 
+/**
+ * 
+ * @param pluginKeyMap any | { map: any; name: string }[]
+ * @param name optional name for mapping
+ * @returns array of Key map plugin
+ */
 export function createKeyMapPlugin(
-  pluginKeyMap: any | Array<{ map: any; name: string }>,
+  pluginKeyMap: any,
   name?: string
 ): any {
   if (Array.isArray(pluginKeyMap)) {
