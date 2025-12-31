@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import { EditorState, Selection, Transaction } from 'prosemirror-state';
 import { Transform } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
@@ -33,7 +38,7 @@ export abstract class UICommand {
   };
 
   dryRun = (state: EditorState, view?: EditorView): boolean => {
-    const fnProxy = typeof window !== 'undefined' && window['Proxy'];
+    const fnProxy = globalThis.window?.Proxy;
 
     const dryRunState = fnProxy
       ? new fnProxy(state, {

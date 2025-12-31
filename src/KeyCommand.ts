@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import { PluginKey, EditorState } from 'prosemirror-state';
 import { keymap } from 'prosemirror-keymap';
 import { Transform } from 'prosemirror-transform';
@@ -45,6 +50,21 @@ export function setPluginKey(plugin: any, key: string): any {
   return plugin;
 }
 
-export function createKeyMapPlugin(pluginKeyMap: any, name: string): any {
-  return setPluginKey(keymap(pluginKeyMap), name);
+/**
+ * 
+ * @param pluginKeyMap any | { map: any; name: string }[]
+ * @param name optional name for mapping
+ * @returns array of Key map plugin
+ */
+export function createKeyMapPlugin(
+  pluginKeyMap: any,
+  name?: string
+): any {
+  if (Array.isArray(pluginKeyMap)) {
+    // return a flat array of plugins
+    return pluginKeyMap.map(({ map, name }) => setPluginKey(keymap(map), name) as object);
+  }
+
+  // single map fallback (for backward compatibility)
+  return [setPluginKey(keymap(pluginKeyMap), name || 'UnnamedKeyMap')];
 }
