@@ -52,6 +52,12 @@ export function setPluginKey(plugin: Plugin, key: string): Plugin {
   return plugin;
 }
 
-export function createKeyMapPlugin(pluginKeyMap: any, name: string): Plugin {
-  return setPluginKey(keymap(pluginKeyMap), name);
+export function createKeyMapPlugin(pluginKeyMap: any, name: string): any {
+   if (Array.isArray(pluginKeyMap)) {
+    // return a flat array of plugins
+    return pluginKeyMap.map(({ map, name }) => setPluginKey(keymap(map), name) as object);
+  }
+    // single map fallback (for backward compatibility)
+  return [setPluginKey(keymap(pluginKeyMap), name || 'UnnamedKeyMap')];
+
 }
