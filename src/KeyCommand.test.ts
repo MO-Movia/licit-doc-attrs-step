@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {Plugin, PluginKey} from 'prosemirror-state';
 import {keymap} from 'prosemirror-keymap';
 import {
@@ -86,7 +91,22 @@ describe('keymap-utils', () => {
       expect(keymap).toHaveBeenCalledWith(fakeMap);
 
       // ensure returned plugin has key set
-      expect(result).toHaveProperty('spec.key');
+      expect(result).toHaveLength(1);
+      expect(result[0]).toHaveProperty('spec.key');
+    });
+  });
+
+  describe('createKeyMapPlugin — array branch', () => {
+    it('should create plugins when pluginKeyMap is an array', () => {
+      const fakeArray = [
+        {map: {'Mod-b': jest.fn()}, name: 'bold'},
+        {map: {'Mod-i': jest.fn()}, name: 'italic'},
+      ];
+
+      const result = createKeyMapPlugin(fakeArray, '');
+
+      expect(keymap).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(2);
     });
   });
 });

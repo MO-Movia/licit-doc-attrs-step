@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {Editor} from '@tiptap/core';
 import {EditorState, Selection, Transaction} from 'prosemirror-state';
 import {Transform} from 'prosemirror-transform';
@@ -42,11 +47,11 @@ export abstract class UICommand {
     return true;
   }
 
-  isEnabled = (state: EditorState, view?: EditorView): boolean | Transform => {
+  isEnabled = (state: EditorState, view?: EditorView): boolean | Transform | Promise<unknown>=> {
     return this.dryRun(state, view);
   };
 
-  dryRun = (state: EditorState, view?: EditorView): boolean | Transform => {
+  dryRun = (state: EditorState, view?: EditorView): boolean | Transform |Promise<unknown> => {
     const fnProxy = typeof window !== 'undefined' && window['Proxy'];
 
     const dryRunState = fnProxy
@@ -82,7 +87,7 @@ export abstract class UICommand {
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     event?: any
-  ): Transform | boolean => {
+  ): Transform | boolean | Promise<unknown> => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
         this.executeWithUserInput(state, dispatch, view, inputs);

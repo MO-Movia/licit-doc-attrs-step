@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {Plugin, PluginKey, EditorState} from 'prosemirror-state';
 import {keymap} from 'prosemirror-keymap';
 import {Transform} from 'prosemirror-transform';
