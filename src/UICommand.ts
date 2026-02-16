@@ -47,11 +47,11 @@ export abstract class UICommand {
     return true;
   }
 
-  isEnabled = (state: EditorState, view?: EditorView): boolean | Transform | Promise<unknown>=> {
+  isEnabled = (state: EditorState, view?: EditorView): boolean | Transform => {
     return this.dryRun(state, view);
   };
 
-  dryRun = (state: EditorState, view?: EditorView): boolean | Transform |Promise<unknown> => {
+  dryRun = (state: EditorState, view?: EditorView): boolean | Transform => {
     const fnProxy = typeof window !== 'undefined' && window['Proxy'];
 
     const dryRunState = fnProxy
@@ -87,7 +87,7 @@ export abstract class UICommand {
     dispatch?: (tr: Transform) => void,
     view?: EditorView,
     event?: any
-  ): Transform | boolean | Promise<unknown> => {
+  ): Transform | boolean => {
     this.waitForUserInput(state, dispatch, view, event)
       .then((inputs) => {
         this.executeWithUserInput(state, dispatch, view, inputs);

@@ -110,9 +110,9 @@ describe('UICommand', () => {
 });
 
   describe('isEnabled', () => {
-    it('should call dryRun and execute with the correct arguments', async() => {
+    it('should call dryRun and execute with the correct arguments', () => {
       const spy = jest.spyOn(uiCmd, 'execute');
-      await uiCmd.isEnabled(
+      uiCmd.isEnabled(
         {} as unknown as EditorState,
         {} as unknown as EditorView
       );
