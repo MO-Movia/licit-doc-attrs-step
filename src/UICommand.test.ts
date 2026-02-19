@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import {UICommand} from './UICommand';
 import {EditorState, Transaction} from 'prosemirror-state';
 import {createEditor, doc, p} from 'jest-prosemirror';
@@ -91,13 +96,18 @@ describe('UICommand', () => {
   });
 
   describe('execute', () => {
-    it('should execute', () => {
-      const spy = jest.spyOn(uiCmd, 'waitForUserInput').mockResolvedValue({});
-      const state_ = {} as unknown as EditorState;
-      uiCmd.execute(state_);
-      expect(spy).toHaveBeenCalled();
-    });
+  it('should execute', async () => {
+    const spy = jest
+      .spyOn(uiCmd, 'waitForUserInput')
+      .mockResolvedValue({});
+
+    const state_ = {} as unknown as EditorState;
+
+    await Promise.resolve(uiCmd.execute(state_));
+
+    expect(spy).toHaveBeenCalled();
   });
+});
 
   describe('isEnabled', () => {
     it('should call dryRun and execute with the correct arguments', () => {

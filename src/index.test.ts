@@ -1,3 +1,8 @@
+/**
+ * @license MIT
+ * @copyright Copyright 2025 Modus Operandi Inc. All Rights Reserved.
+ */
+
 import { SetDocAttrStep } from './index';
 import { AddMarkStep } from 'prosemirror-transform';
 import { em } from 'jest-prosemirror';
