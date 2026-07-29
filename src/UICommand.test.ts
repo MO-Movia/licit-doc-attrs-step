@@ -114,4 +114,26 @@ describe('UICommand', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
+
+  describe('dryRun error handling', () => {
+    it('should return false and log error when execute throws', () => {
+      const errorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => undefined);
+      const cmd = new MockUICommand();
+      jest
+        .spyOn(cmd, 'execute')
+        .mockImplementation(() => {
+          throw new Error('TransformError: Invalid content for node');
+        });
+
+      const result = cmd.dryRun(
+        {} as unknown as EditorState
+      );
+
+      expect(result).toBe(false);
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
+  });
 });

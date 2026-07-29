@@ -47,7 +47,17 @@ export abstract class UICommand {
       })
       : state;
 
-    return this.execute(dryRunState, undefined, view, null);
+    try {
+      return this.execute(dryRunState, undefined, view, null);
+    } catch (error) {
+      // A dry-run is a speculative "can this command run?" check invoked
+      // during CommandButton.render().  If the document is in an invalid
+      // state (e.g. an inline node where a block is expected), the
+      // speculative transaction will throw a TransformError.  Disabling
+      // the button is the correct response — crashing the React tree is not.
+      console.error(error);
+      return false;
+    }
   };
 
   dryRunEditorStateProxyGetter = (state: any, propKey: string): any => {
